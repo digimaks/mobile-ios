@@ -1,0 +1,409 @@
+/*
+Copyright (c) 2026 European Commission
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import Foundation
+import MdocDataModel18013
+import MdocSecurity18013
+import MdocDataTransfer18013
+import X509
+import struct WalletStorage.Document
+import struct OpenID4VP.ClaimPath
+import enum OpenID4VP.Authorization
+
+/// Implements proximity attestation presentation with QR to BLE data transfer
+
+/// Implementation is based on the ISO/IEC 18013-5 specification
+
+public final class BlePresentationService: @unchecked Sendable, PresentationService {
+	var bleTranport: any MdocBleTransport
+	var bleServer: (any MdocBleTransport)?
+	let bleTransferMode: BleTransferMode
+	public var status: TransferStatus = .initialized
+	var isPeripheralManagerPoweredOn = false
+	var isCentralManagerPoweredOn = false
+	var continuationPowerOn: CheckedContinuation<Void, Error>?
+	var continuationRequest: CheckedContinuation<UserRequestInfo, Error>?
+	var continuationDisconnect: CheckedContinuation<Void, Error>?
+    /// Continuation for awaiting L2CAP PSM publication
+    var psm: UInt16?
+	var request: UserRequestInfo?
+	var readBuffer = Data()
+	public var wrpVerifierPolicy: WrpRegistrationPolicy?
+	public var wrpVerifierWarnings: [String: [PresentationPolicyViolation]]?
+	public var transactionLog: TransactionLog
+	public var documentIds: [Document.ID] = []
+	public var zkpDocumentIds: [Document.ID]?
+	public var flow: FlowType { .ble }
+	public var deviceEngagement: DeviceEngagement?
+	public var deviceRequest: DeviceRequest?
+	public var sessionEncryption: SessionEncryption?
+	public var docs: [String: IssuerSigned]!
+	public var docMetadata: [String: Data?]!
+	public var trustValidator: any CertificateTrustValidator
+	/// Validator for the relying party registration certificate carried in the device request
+	let wrpRegistrationValidator: WrpVpRegistrationValidator?
+	public var privateKeyObjects: [String: CoseKeyPrivate]!
+	public var dauthMethod: DeviceAuthMethod
+	public var zkSystemRepository: ZkSystemRepository?
+	public var readerName: String?
+	public var qrCodePayload: String?
+	public var unlockData: [String: Data]!
+	public var deviceResponseBytes: Data?
+	public var responseMetadata: [Data?]!
+	/// Local authentication context reused for the device-key operations of the response
+	var authenticationContext: ThreadSafeAuthContext
+
+	public init(parameters: InitializeTransferData, authenticationContext: ThreadSafeAuthContext, transportFactory: (any BleTransportFactory)? = nil, wrpRegistrationValidator: WrpVpRegistrationValidator? = nil) async throws {
+		let objs = try await parameters.toInitializeTransferInfo()
+		self.docs = try objs.documentObjects.mapValues { try IssuerSigned(data: $0.bytes) }
+		docMetadata = parameters.docMetadata
+		self.privateKeyObjects = objs.privateKeyObjects
+		self.trustValidator = objs.trustValidator
+		self.wrpRegistrationValidator = wrpRegistrationValidator
+		self.dauthMethod = objs.deviceAuthMethod
+		self.zkSystemRepository = objs.zkSystemRepository
+		bleTransferMode = parameters.bleTransferMode
+		self.authenticationContext = authenticationContext
+		let factory = transportFactory ?? DefaultBleTransportFactory()
+		bleTranport = bleTransferMode == .server ? factory.createServer() : factory.createClient()
+		if bleTransferMode == .both { bleServer = factory.createServer() }
+		transactionLog = TransactionLogUtils.initializeTransactionLog(type: .presentation, dataFormat: .cbor)
+		bleTranport.delegate = self
+		bleServer?.delegate = self
+	}
+
+	var isInErrorState: Bool { status == .error }
+	// Create a new device engagement object and start the device engagement process.
+	///
+	/// ``qrCodePayload`` is set to QR code data corresponding to the device engagement.
+	public func performDeviceEngagement(secureArea: any SecureArea, keyOptions: KeyOptions, rfus: [String]? = nil) async throws {
+		if unlockData == nil {
+			unlockData = [String: Data]()
+			for (id, key) in privateKeyObjects {
+				let ud = try await key.secureArea.unlockKey(id: id)
+				if let ud { unlockData[id] = ud }
+			}
+		}
+
+		guard !isInErrorState else {
+			logger.info("Current status is \(status)")
+			return
+		}
+		// Check that the class is in the right state to start the device engagement process. It will fail if the class is in any other state.
+		guard status == .initialized || status == .disconnected || status == .responseSent else {
+			throw MdocHelpers.makeError(code: .unexpected_error, str: "Not initialized!")
+		}
+		// todo: issuerNameSpaces is not mandatory according to specs, need to change
+		guard docs.values.allSatisfy({ $0.issuerNameSpaces != nil }) else {
+			throw MdocHelpers.makeError(code: .invalidInputDocument)
+		}
+		deviceEngagement = DeviceEngagement(supportsCentralClientMode: bleTransferMode == .client || bleTransferMode == .both, supportsPeripheralServerMode: bleTransferMode == .server || bleTransferMode == .both, rfus: rfus)
+		try await deviceEngagement!.makePrivateKey(secureArea: secureArea, keyOptions: keyOptions)
+		sessionEncryption = nil
+#if os(iOS)
+
+		guard bleTranport.isAuthorized else {
+			throw MdocHelpers.makeError(code: .bleNotAuthorized)
+		}
+		//if !bleTranport.isBlePoweredOn {
+		try await withCheckedThrowingContinuation { c in
+			continuationPowerOn = c
+			evaluatePowerOnStatus()
+		}
+		//} // ensure that BLE is powered on before proceeding
+		continuationPowerOn = nil
+#endif
+		bleTranport.startBleAdvertising()
+		bleServer?.startBleAdvertising()
+	}
+
+	/// Generate device engagement QR code
+
+	/// The holder app should present the returned code to the verifier
+	/// - Returns: The image data for the QR code
+	public func startQrEngagement(secureAreaName: String?, keyOptions: KeyOptions) async throws -> String {
+		try await performDeviceEngagement(secureArea: SecureAreaRegistry.shared.get(name: secureAreaName), keyOptions: keyOptions)
+		if bleTranport.supportsL2cap, let psm { deviceEngagement?.updatePsm(psm) }
+		qrCodePayload = deviceEngagement!.getQrCodePayload()
+		logger.info("Created qrCode payload: \(qrCodePayload!)")
+		status = .qrEngagementReady
+		return status == .qrEngagementReady ? (qrCodePayload ?? "") : ""
+	}
+
+func handleStatusChange(_ newValue: TransferStatus) async {
+		guard !isInErrorState else {
+			return
+		}
+		logger.log(level: .info, "Transfer status will change to \(newValue)")
+		switch newValue {
+		case .requestReceived:
+			bleTranport.stopBleAdvertising()
+			bleServer?.stopBleAdvertising()
+			let compactDocMetadata = docMetadata.compactMapValues { $0 }
+			let decodedRes = await MdocHelpers.decodeRequestAndInformUser(deviceEngagement: deviceEngagement, docs: docs, docMetadata: compactDocMetadata, trustValidator: trustValidator, requestData: readBuffer, privateKeyObjects: privateKeyObjects, dauthMethod: dauthMethod, unlockData: unlockData, readerKeyRawData: nil, handOver: BleTransferMode.QRHandover, authenticationContext: authenticationContext)
+			switch decodedRes {
+			case .success(let decoded):
+				deviceRequest = decoded.deviceRequest
+				sessionEncryption = decoded.sessionEncryption
+				if decoded.isValidRequest {
+					do {
+						try await validateWrpRegistration(deviceRequest: decoded.deviceRequest, userRequestInfo: decoded.userRequestInfo)
+					} catch {
+						didFinishedWithError(error)
+						return
+					}
+					continuationRequest?.resume(returning: decoded.userRequestInfo)
+					continuationRequest = nil
+				} else {
+					await userSelected(false, nil, nil)
+					let userInfo = [NSLocalizedDescriptionKey: PresentationSession.notAvailableStr]
+					didFinishedWithError(NSError(domain: "\(MdocGattServer.self)", code: 0, userInfo: userInfo))
+				}
+			case .failure(let err):
+				didFinishedWithError(err)
+				return
+			}
+		case .connected: break
+		case .disconnected where status != .disconnected:
+			stop()
+		case .poweredOn: break
+		case .qrEngagementReady:
+			break
+		case .disconnected:
+			continuationDisconnect?.resume(returning: ())
+			continuationDisconnect = nil
+		default: break
+		}
+	}
+
+	/// Validate the relying party registration certificate (WRPRC) carried in the BLE device request.
+	///
+	/// According to ETSI TS 119 472-2 (clause 5.3.2), the WRPRC is repeated in the `requestInfo` member
+	/// of each `ItemsRequest`, under the "euWrprc" label. On success ``relyingPartyRegistration`` and
+	/// ``wrpWarnings`` are set; they are surfaced to the UI by the `PresentationSession` caller.
+	/// - Throws: `WalletError` when the certificate is invalid and the trust policy is set to enforce
+	func validateWrpRegistration(deviceRequest: DeviceRequest, userRequestInfo: UserRequestInfo) async throws {
+		guard let wrpRegistrationValidator else { return }
+		let dcql = try OpenId4VpUtils.makeDcql(itemsRequested: userRequestInfo.itemsRequested)
+		await wrpRegistrationValidator.set(dcqlQueryable: makeDcqlQueryable())
+		// The relying party access certificate is the reader authentication leaf certificate
+		let wrpac: Certificate? = if let der = userRequestInfo.defaultReaderAuthResult?.certificateChain?.first { try? Certificate(derEncoded: [UInt8](der)) } else { nil }
+		guard let authorization = await wrpRegistrationValidator.validateDeviceRequestCertificate(wrpac: wrpac, deviceRequest: deviceRequest, dcql: dcql) else {
+			logger.info("No relying party registration certificate present in the device request")
+			return
+		}
+		switch authorization {
+		case .granted(let warnings):
+			wrpVerifierWarnings = await wrpRegistrationValidator.wrpVpWarnings
+			wrpVerifierPolicy = await wrpRegistrationValidator.wrpVpRegistrationPolicy
+			if !warnings.isEmpty { logger.warning("WRP registration policy warnings: \(warnings.mapValues { $0.map(\.violation) })") }
+		case .notGranted(let error):
+			throw WalletError(description: "WRP registration certificate validation failed: \(error.violation)", code: .invalidWrprc)
+		}
+	}
+
+	/// Make a DCQL queryable from the wallet documents of this session, used to resolve the request scope against the registration policy
+	func makeDcqlQueryable() -> DefaultDcqlQueryable {
+		let idsToDocTypes = docs.mapValues { $0.issuerAuth.mso.docType }
+		let formatsRequested = Dictionary(idsToDocTypes.values.map { ($0, DocDataFormat.cbor) }, uniquingKeysWith: { first, _ in first })
+		let credentialMap = OpenId4VpUtils.makeCredentialMap(idsToDocTypes: idsToDocTypes, formatsRequested: formatsRequested)
+		var claimPaths = [Document.ID: [ClaimPath]]()
+		var claimValues = [Document.ID: [ClaimPath: [String]]]()
+		OpenId4VpUtils.makeCborClaimData(from: docs, claimPaths: &claimPaths, claimValues: &claimValues)
+		return DefaultDcqlQueryable(credentials: credentialMap, claimPaths: claimPaths, claimValues: claimValues)
+	}
+
+	public func stop() {
+		bleTranport.stop()
+		bleServer?.stop()
+		sessionEncryption = nil
+		qrCodePayload = nil
+		if let pk = deviceEngagement?.privateKey {
+			Task { @MainActor in
+				try? await pk.secureArea.deleteKeyBatch(id: pk.privateKeyId, startIndex: 0, batchSize: 1)
+				deviceEngagement?.privateKey = nil
+			}
+		}
+		if status == .error {
+			status = .initializing
+		}
+	}
+
+	public func userSelected(_ b: Bool, _ items: RequestItems?, _ deviceNameSpaces: RequestDeviceNameSpaces? = nil) async {
+		status = .userSelected
+		let resError = await MdocHelpers.getSessionDataToSend(sessionEncryption: sessionEncryption, status: .error, docToSend: DeviceResponse(status: 0))
+		var bytesToSend = try! resError.get()
+		deviceResponseBytes = bytesToSend.1
+		var errorToSend: Error?
+		defer {
+			logger.info("Prepare \(bytesToSend.0.count) bytes to send")
+			bleTranport.sendData(bytesToSend.0)
+		}
+		if !b {
+			errorToSend = MdocHelpers.makeError(code: .userRejected)
+		}
+		if let items {
+			do {
+				let docTypeReq = deviceRequest?.docRequests.first?.itemsRequest.docType ?? ""
+				let compactDocMetadata = docMetadata.compactMapValues { $0 }
+				let eReaderKey = sessionEncryption!.sessionKeys.publicKey
+				guard let (drToSend, _, _, resMetadata, resDocIds, resZkpDocIds) = try await MdocHelpers.getDeviceResponseToSend(
+					deviceRequest: deviceRequest!,
+					issuerSigned: docs,
+					docMetadata: compactDocMetadata,
+					selectedItems: items,
+					sessionEncryption: sessionEncryption,
+					eReaderKey: eReaderKey,
+					privateKeyObjects: privateKeyObjects,
+					dauthMethod: dauthMethod,
+					unlockData: unlockData,
+					zkSystemRepository: zkSystemRepository,
+					deviceNameSpacesRequested: deviceNameSpaces,
+					authenticationContext: authenticationContext) else {
+					errorToSend = MdocHelpers.getErrorNoDocuments(docTypeReq)
+					return
+				}
+				guard !drToSend.documents.isNilOrEmpty || !drToSend.zkDocuments.isNilOrEmpty else {
+					errorToSend = MdocHelpers.getErrorNoDocuments(docTypeReq)
+					return
+				}
+				let dataRes = await MdocHelpers.getSessionDataToSend(sessionEncryption: sessionEncryption, status: .requestReceived, docToSend: drToSend)
+				switch dataRes {
+				case .success(let bytes):
+					bytesToSend = bytes
+					deviceResponseBytes = bytes.1
+					responseMetadata = resMetadata
+					documentIds = resDocIds
+					zkpDocumentIds = resZkpDocIds
+				case .failure(let err):
+					errorToSend = err
+					return
+				}
+			} catch {
+				errorToSend = error
+			}
+			if let errorToSend {
+				logger.error("Error sending data: \(errorToSend)")
+			}
+		}
+	}
+
+	///  Receive request via BLE
+	///
+	/// - Returns: The requested items.
+	public func receiveRequest() async throws -> [UserRequestInfo] {
+		let userRequestInfo = try await withCheckedThrowingContinuation { c in
+			continuationRequest = c
+		}
+		TransactionLogUtils.setCborTransactionLogRequestInfo(userRequestInfo, wrpVpPolicy: wrpVerifierPolicy, transactionLog: &transactionLog)
+		return [userRequestInfo]
+	}
+
+	public func unlockKey(id: String) async throws -> Data? {
+		if let dpo = privateKeyObjects[id] {
+			return try await dpo.secureArea.unlockKey(id: id)
+		}
+		return nil
+	}
+	/// Send response via BLE
+	///
+	/// - Parameters:
+	///   - userAccepted: True if user accepted to send the response
+	///   - itemsToSend: The selected items to send organized in document types and namespaces
+	///   - deviceNameSpacesToSend: Optional device-signed namespaces to include in the response
+	///   - onSuccess: Callback invoked on successful response with an optional redirect URL
+	public func sendResponse(userAccepted: Bool, itemsToSend: RequestItems, deviceNameSpacesToSend: RequestDeviceNameSpaces? = nil, authenticationContext: ThreadSafeAuthContext, onSuccess: (@Sendable (URL?) -> Void)?) async throws  {
+		self.authenticationContext = authenticationContext
+		await userSelected(userAccepted, itemsToSend, deviceNameSpacesToSend)
+		// documentIds is populated by userSelected after a successful response build.
+		// docType and displayName are not available on this service; they are populated by the PresentationSession caller which has access to docIdToPresentInfo.
+		let firstDocId = documentIds.first
+		let firstDocType = firstDocId.flatMap { docs[$0]?.issuerAuth.mso.docType }
+		TransactionLogUtils.setCborTransactionLogResponseInfo(self, documentId: firstDocId, docType: firstDocType, displayName: nil, transactionLog: &transactionLog)
+	}
+
+	public func waitForDisconnect() async throws {
+		if status == .disconnected { return }
+		try await withCheckedThrowingContinuation { c in
+			continuationDisconnect = c
+		}
+	}
+}
+
+/// handle events from underlying BLE service
+extension BlePresentationService: MdocOfflineDelegate {
+	/// BLE transfer changed status
+	/// - Parameter newStatus: New status
+	public func didChangeStatus(_ newStatus: MdocDataTransfer18013.TransferStatus) {
+		Task { @MainActor in
+			status = if let st = TransferStatus(rawValue: newStatus.rawValue) { st } else { .error }
+			await handleStatusChange(status)
+		}
+		logger.info("Ble changed status to \(status)")
+	}
+	/// Transfer finished with error
+	/// - Parameter error: The error description
+	public func didFinishedWithError(_ error: Error) {
+		logger.info("Ble finished with error: \(error)")
+		continuationRequest?.resume(throwing: error); continuationRequest = nil
+		continuationDisconnect?.resume(throwing: error); continuationDisconnect = nil
+	}
+
+	func evaluatePowerOnStatus() {
+		if (bleTransferMode == .server && isPeripheralManagerPoweredOn) || (bleTransferMode == .client && isCentralManagerPoweredOn) || (bleTransferMode == .both && isPeripheralManagerPoweredOn && isCentralManagerPoweredOn) {
+			continuationPowerOn?.resume(returning: ())
+			continuationPowerOn = nil
+		}
+}
+
+public func didPoweredOn(isPeripheralManager: Bool) {
+		logger.info("Ble powered on, isPeripheralManager: \(isPeripheralManager)")
+		if isPeripheralManager {
+			isPeripheralManagerPoweredOn = true
+		} else {
+			isCentralManagerPoweredOn = true
+		}
+		evaluatePowerOnStatus()
+	}
+
+	/// BLE device connected
+	/// - Parameters:
+	///  - isPeripheral: True if the device connected is a peripheral
+	/// - deviceName: The name of the connected device if available
+	public func didConnected(isPeripheral: Bool, deviceName: String?) {
+		logger.info("Ble device connected, isPeripheral: \(isPeripheral), deviceName: \(deviceName ?? "unknown")")
+		if isPeripheral { bleServer = nil }
+		else if bleTransferMode == .both { bleTranport = bleServer! }
+	}
+
+	/// Received request handler
+	/// - Parameters:
+	///   - request: Request information
+	///   - handleSelected: Callback function to call after user selection of items to send
+	public func didReceiveRequest(_ data: Data) {
+		logger.info("Ble received request data of length: \(data.count)")
+		readBuffer = data
+	}
+
+	/// - Parameters:
+	///   - request: Request information
+	///   - handleSelected: Callback function to call after user selection of items to send
+	public func didPublishedPsmChannel(psm: UInt16?) {
+		if let psm { logger.info("Ble published PSM channel: \(psm)") }
+		self.psm = psm
+	}
+
+}

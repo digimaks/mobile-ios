@@ -1,0 +1,786 @@
+# EUDI Wallet Kit library for iOS
+
+**Important!** Before you proceed, please read
+the [EUDI Wallet Reference Implementation project description](https://github.com/eu-digital-identity-wallet/.github/blob/main/profile/reference-implementation.md)
+
+----
+
+# EUDI ISO iOS Wallet Kit library
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Swift](https://github.com/eu-digital-identity-wallet/eudi-lib-ios-wallet-kit/actions/workflows/swift.yml/badge.svg)](https://github.com/eu-digital-identity-wallet/eudi-lib-ios-wallet-kit/actions/workflows/swift.yml)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=eu-digital-identity-wallet_eudi-lib-ios-wallet-kit&metric=ncloc&token=ceca670d1f503fb68c5545e9d6bf44465a5883a6)](https://sonarcloud.io/summary/new_code?id=eu-digital-identity-wallet_eudi-lib-ios-wallet-kit)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=eu-digital-identity-wallet_eudi-lib-ios-wallet-kit&metric=duplicated_lines_density&token=ceca670d1f503fb68c5545e9d6bf44465a5883a6)](https://sonarcloud.io/summary/new_code?id=eu-digital-identity-wallet_eudi-lib-ios-wallet-kit)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=eu-digital-identity-wallet_eudi-lib-ios-wallet-kit&metric=reliability_rating&token=ceca670d1f503fb68c5545e9d6bf44465a5883a6)](https://sonarcloud.io/summary/new_code?id=eu-digital-identity-wallet_eudi-lib-ios-wallet-kit)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=eu-digital-identity-wallet_eudi-lib-ios-wallet-kit&metric=vulnerabilities&token=ceca670d1f503fb68c5545e9d6bf44465a5883a6)](https://sonarcloud.io/summary/new_code?id=eu-digital-identity-wallet_eudi-lib-ios-wallet-kit)
+
+## Overview
+
+This repository contains the EUDI Wallet Kit library for iOS. The library is a part
+of the EUDI Wallet Reference Implementation project.
+
+This library acts as a coordinator by orchestrating the various components that are
+required to implement the EUDI Wallet functionality. On top of that, it provides a simplified API
+that can be used by the application to implement the EUDI Wallet functionality.
+
+```mermaid
+graph TD;
+    A[eudi-lib-ios-wallet-kit]
+    B[eudi-lib-ios-wallet-storage] -->  |Wallet Storage|A 
+    C[eudi-lib-ios-iso18013-data-transfer] --> |Transfer Manager|A 
+    D[eudi-lib-ios-openid4vci-swift] --> |OpenId4Vci Manager|A 
+    E[eudi-lib-ios-siop-openid4vp-swift] --> |OpenId4Vp Manager|A 
+    F[eudi-lib-ios-iso18013-security] --> |Mdoc Security|C 
+    G[eudi-lib-ios-iso18013-data-model] --> |Mdoc Data Model|C 
+    H[eudi-lib-ios-presentation-exchange-swift] --> E 
+```
+
+The library provides the following functionality:
+
+- Document management
+    - [x] Storage encryption
+    - [x] Using iOS Secure Enclave for generating/storing documents' keypair
+    - [x] Enforcing device user authentication when retrieving documents' private keys
+- Document issuance
+    - [x] Support
+      for [OpenId4VCI (1.0)](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html)
+      document issuance
+        - [x] Authorization Code Flow
+        - [x] Pre-authorization Code Flow
+        - [x] Support for mso_mdoc format
+        - [x] Support for sd-jwt-vc format
+            - [x] Support credential offer
+            - [x] Support for DPoP JWT in authorization
+            - [x] Support for OAuth 2.0 Attestation-Based Client Authentication
+        - [x] Support for JWT proof types
+        - [x] Support for deferred issuing
+        - [x] Support for batch issuing
+- Proximity document presentation
+    - [x] Support for ISO-18013-5 device retrieval
+        - [x] QR device engagement
+        - [x] BLE data transfer
+- Remote document presentation
+    - [x] [OpenId4VP (1.0)](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)
+      document transfer
+        - [x] ClienID scheme: preregistered, x509_san_uri, x509_san_dns, redirect_uri
+        - [x] DCQL
+        - [x] Optional partial claim presentation for DCQL requests
+
+The library is written in Swift and is compatible with iOS 17 or higher. It requires Swift 6.2 or later. It is distributed as a Swift package and can be included in any iOS project.
+
+It is based on the following specifications:
+- ISO/IEC 18013-5 – Published
+- Presentation Exchange v2.0.0 - Published
+- [OpenID4VP – 1.0](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)
+- [OpenID4VCI – 1.0](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html)
+
+### Disclaimer
+The released software is a initial development release version: 
+-  The initial development release is an early endeavor reflecting the efforts of a short timeboxed period, and by no means can be considered as the final product.  
+-  The initial development release may be changed substantially over time, might introduce new features but also may change or remove existing ones, potentially breaking compatibility with your existing code.
+-  The initial development release is limited in functional scope.
+-  The initial development release may contain errors or design flaws and other problems that could cause system or other failures and data loss.
+-  The initial development release has reduced security, privacy, availability, and reliability standards relative to future releases. This could make the software slower, less reliable, or more vulnerable to attacks than mature software.
+-  The initial development release is not yet comprehensively documented. 
+-  Users of the software must perform sufficient engineering and additional testing in order to properly evaluate their application and determine whether any of the open-sourced components is suitable for use in that application.
+-  We strongly recommend to not put this version of the software into production use.
+-  Only the latest version of the software will be supported
+
+## Installation
+To use EUDI Wallet Kit, add the following dependency to your Package.swift:
+```swift
+dependencies: [
+    .package(url: "https://github.com/eu-digital-identity-wallet/eudi-lib-ios-wallet-kit.git", .upToNextMajor(from: "0.16.4"))
+]
+```
+
+Then add the Eudi Wallet package to your target's dependencies:
+```swift
+dependencies: [
+    .product(name: "EudiWalletKit", package: "eudi-lib-ios-wallet-kit"),
+]
+```
+## Reference
+Detailed documentation is provided in the DocC documentation [here](https://eu-digital-identity-wallet.github.io/eudi-lib-ios-wallet-kit/documentation/eudiwalletkit/)
+
+## Initialization
+The [EudiWallet](https://eu-digital-identity-wallet.github.io/eudi-lib-ios-wallet-kit/documentation/eudiwalletkit/eudiwallet) class provides a unified API for the two user attestation presentation flows. It is initialized with an `EudiWalletConfiguration` instance that consolidates all wallet settings. For SwiftUI apps, the wallet instance can be added as an ``environmentObject`` to be accessible from all views. A KeyChain implementation of document storage is available.
+
+The wallet developer can customize cryptographic key operations by passing `SecureArea` instances to the wallet, otherwise the wallet-kit creates 'SecureEnclave' (default) and 'Software' secure areas. The wallet developer can specify key create options per doc-type such as curve type, secure area name, and key unlock policy.
+
+```swift
+// Basic initialization with EudiWalletConfiguration and TrustConfiguration
+let config = EudiWalletConfiguration(serviceName: "my_wallet_app")
+let trustConfig = TrustConfiguration(
+    trustSource: .etsi(.eudiRef),
+)
+let wallet = try! EudiWallet(eudiWalletConfig: config, trustConfig: trustConfig)
+
+// With additional configuration options
+let config = EudiWalletConfiguration(
+    serviceName: "my_wallet_app",
+    userAuthenticationRequired: true,
+    deviceAuthMethod: .deviceSignature,
+    uiCulture: "en",
+    logFileName: "wallet.log",
+    bleTransferMode: .server  // .server (default), .client, or .both
+)
+let openId4VpConfig = OpenId4VpConfiguration(
+    clientIdSchemes: [.x509SanDns, .x509Hash, .redirectUri],
+    preferredResponseMode: .directPostJWT
+)
+let wallet = try! EudiWallet(
+    eudiWalletConfig: config,
+    trustConfig: trustConfig,
+    openID4VpConfig: openId4VpConfig
+)
+```
+
+Set `preferredResponseMode` to override the response mode requested by the verifier. When set to `.directPost`, the authorization response is sent as a plain POST. When set to `.directPostJWT`, the response is sent as an encrypted direct POST JWT. The response URI is always taken from the verifier's request. When `nil` (the default), the library uses the response mode specified by the verifier.
+
+### Trust configuration
+
+`EudiWallet` requires a `TrustConfiguration` that describes where trust anchors come from and how trust failures are handled. A single `TrustConfiguration` drives certificate-chain validation across the wallet:
+
+- **Issuer (document-signer) certificates** validated during OpenID4VCI issuance.
+- **Reader / relying-party access certificates** validated during proximity (BLE) and remote (OpenID4VP) presentation.
+- **Status list token signatures** validated when checking document revocation status.
+- **Issuer metadata signatures** (see [Configuring Issuer Metadata Policy](#configuring-issuer-metadata-policy-with-certificate-chain-trust)).
+
+A `TrustConfiguration` is built from one or more `TrustSource` values. A trust source is either ETSI LoTE (List of Trusted Entities) infrastructure, whose anchors are downloaded from LoTEs, or a static, bundled list of anchor certificates that needs no network access:
+
+```swift
+// ETSI LoTE trust source using a ready-made environment preset
+let trustSource: TrustSource = .etsi(.eudiRef)   // or .etsi(.digiTrust)
+
+// Static, bundled anchors (no LoTE download, no network)
+let staticSource: TrustSource = .staticList(
+    StaticListTrustSource(rootCertificates: [Data(name: "pidissuerca02_ut", ext: "der")!])
+)
+
+let trustConfig = TrustConfiguration(
+    trustSource: trustSource,
+    fallbackTrustSource: staticSource,   // consulted when the primary source has no context for a doc type
+    defaultPolicy: .enforce,             // .enforce (reject on failure) or .warning (log only)
+    docTypePolicies: [:],                // optional per-doc-type overrides of defaultPolicy
+    requireSignedMetadata: true,         // require signed OpenID4VCI issuer metadata
+    statusTrustPolicy: .warning,         // trust policy for status token signature validation
+    clockSkew: 60                        // allowed clock skew (seconds) for status token verification
+)
+```
+
+The `fallbackTrustSource` is optional (pass `nil` to disable it). When the primary trust source cannot evaluate a chain — for example, it has no verification context configured for the requested doc type — validation is delegated to the fallback source.
+
+Use `defaultPolicy` to control the behaviour on a trust failure: `.enforce` rejects the certificate chain, while `.warning` logs the failure but allows the operation to continue. Provide `docTypePolicies` to override the policy for specific doc types.
+
+The `statusTrustPolicy` parameter controls how the wallet handles trust failures when validating status list token signatures (used for document revocation/suspension checks). It defaults to `.enforce`, which rejects tokens whose signing certificate chain cannot be validated. Set it to `.warning` to log the trust failure but still allow the status check to succeed — useful during development or when status token issuers use certificates outside the configured trust anchors.
+
+### OpenID4VCI Configuration
+
+The wallet now supports multiple OpenID4VCI issuer configurations for enhanced flexibility. You can configure the wallet with a dictionary of issuer configurations:
+
+```swift
+// Configure multiple OpenID4VCI issuers with DPoP support
+let issuerConfigurations: [String: OpenId4VciConfiguration] = [
+    "eudi_pid_issuer": OpenId4VciConfiguration(
+        credentialIssuerURL: "https://pid.issuer.example.com",
+    requireDpop: true,
+    issuerMetadataPolicy: .requireSigned,
+        dpopKeyOptions: KeyOptions(
+            secureAreaName: "SecureEnclave", curve: .P256, accessControl: .requireUserPresence
+        )
+    ),
+    "mdl_issuer": OpenId4VciConfiguration(
+        credentialIssuerURL: "https://mdl.issuer.example.com",
+    requireDpop: false,
+    issuerMetadataPolicy: .ignoreSigned
+    )
+]
+
+let config = EudiWalletConfiguration()
+let trustConfig = TrustConfiguration(trustSource: .etsi(.eudiRef), fallbackTrustSource: nil)
+let wallet = try! EudiWallet(
+    eudiWalletConfig: config,
+    trustConfig: trustConfig,
+    openID4VciConfigurations: issuerConfigurations
+)
+
+// Register additional issuers after initialization
+try wallet.registerOpenId4VciServices([
+    "new_issuer": OpenId4VciConfiguration(credentialIssuerURL: "https://new.issuer.com")
+])
+```
+
+The `requireDpop` property controls whether issuance should halt when DPoP is not available. The `issuerMetadataPolicy` property controls signed metadata handling per issuer (`.ignoreSigned` or `.requireSigned`). The `dpopKeyOptions` property allows you to specify key generation parameters for DPoP keys, including the secure area, curve type and user authentication options.
+
+### OAuth 2.0 Attestation-Based Client Authentication
+
+The wallet supports OAuth 2.0 Attestation-Based Client Authentication as defined in [RFC 9449](https://datatracker.ietf.org/doc/html/rfc9449). This provides a mechanism for wallet applications to prove possession of cryptographic keys bound to wallet and key attestations.
+
+To use attestation-based authentication, implement the `WalletAttestationsProvider` protocol and configure it in the `OpenId4VciConfiguration`:
+
+```swift
+// Implement the WalletAttestationsProvider protocol
+struct MyAttestationProvider: WalletAttestationsProvider {
+    func getWalletAttestation(signingKey: SigningKeyProxy) async throws -> String {
+        // Obtain wallet attestation JWT from your attestation service
+        // Use getPublicJWK() to get the public key bound to the attestation
+        let key = try signingKey.getPublicJWK()
+        return try await attestationService.getWalletAttestation(for: key)
+    }
+    
+  public func getKeysAttestation(keys: [any JOSESwift.JWK], nonce: String?) async throws -> String {
+        var params: [String: Any] =  ["jwkSet": ["keys": try keys.map { try $0.toDictionary() }]]
+        if let nonce { params["nonce"] = nonce }
+        let attestation = try await issueWalletUnitAttestation(dictionary: params)
+        return attestation.walletUnitAttestation
+    }
+}
+
+// Configure OpenID4VCI with attestation support
+let config = OpenId4VciConfiguration(
+    credentialIssuerURL: "https://issuer.example.com",
+    clientId: "my-wallet-app",
+    keyAttestationsConfig: KeyAttestationConfig(
+        walletAttestationsProvider: MyAttestationProvider(),
+        popKeyOptions: KeyOptions(
+            secureAreaName: "SecureEnclave",
+            curve: .P256,
+            accessControl: .requireUserPresence
+        ),
+        popKeyDuration: 300  // PoP JWT validity in seconds (default: 300)
+    ),
+    requireDpop: true,
+    issuerMetadataPolicy: .requireSigned
+)
+
+let walletConfig = EudiWalletConfiguration()
+let trustConfig = TrustConfiguration(trustSource: .etsi(.eudiRef), fallbackTrustSource: nil)
+let wallet = try! EudiWallet(
+    eudiWalletConfig: walletConfig,
+    trustConfig: trustConfig,
+    openID4VciConfigurations: ["attested_issuer": config]
+)
+```
+
+The `KeyAttestationConfig` structure accepts the following parameters:
+
+- `walletAttestationsProvider`: Provider implementation for obtaining wallet and key attestations
+- `popKeyOptions`: Optional key generation parameters for the Proof-of-Possession key
+- `popKeyDuration`: Optional duration in seconds for PoP JWT validity (default: 300 seconds)
+
+When configured, the wallet will:
+
+1. Generate a key pair for client attestation PoP
+2. Obtain a wallet attestation JWT bound to the public key
+3. Create attestation PoP JWTs for authorization requests
+4. Include key attestations when issuing credentials
+
+If you need the generated keys and their batch attestation outside the issuance flow, use the `createKeyBatchWithAttestation` method to create a batch of keys with a single attestation:
+
+```swift
+let result = try await wallet.createKeyBatchWithAttestation(
+  issuerName: "attested_issuer",
+  id: UUID().uuidString,
+  credentialOptions: CredentialOptions(credentialPolicy: .rotateUse, batchSize: 2),
+  keyOptions: KeyOptions(secureAreaName: SoftwareSecureArea.name, curve: .P256),
+  nonce: "issuer-provided-nonce"
+)
+
+let keys = result.keys
+let keyAttestationJwt = result.keyAttestation
+```
+
+## Manage documents
+
+The [EudiWallet](https://eu-digital-identity-wallet.github.io/eudi-lib-ios-wallet-kit/documentation/eudiwalletkit/eudiwallet) class provides a set of methods to work with documents.
+
+### Loading documents
+
+The `loadDocuments` method returns documents with a specific status from storage.
+
+The following example shows how to retrieve issued documents:
+
+```swift
+ public func loadDocuments() async throws {
+    let documents = try await wallet.loadDocuments(status: .issued)
+  }
+```
+
+To retrieve documents of all statuses use the `loadAllDocuments` method.
+
+```swift
+let documents = try await wallet.loadAllDocuments()
+```
+
+The `loadDocument(id:status:)` method returns a document with a given id and status. 
+
+The following example shows how to retrieve a document:
+
+```swift
+let document = try await wallet.loadDocument(id: documentId, status: .issued)
+```
+
+### Storage manager
+The read-only property ``storage`` is an instance of a [StorageManager](https://eu-digital-identity-wallet.github.io/eudi-lib-ios-wallet-kit/documentation/eudiwalletkit/storagemanager) class.
+Currently the keychain implementation is used. It provides document management functionality using the iOS KeyChain.
+
+The storage model provides the following models for the supported well-known document types:
+
+|DocType|Model|
+|-------|-----|
+|eu.europa.ec.eudiw.pid.1|[EuPidModel](https://eu-digital-identity-wallet.github.io/eudi-lib-ios-iso18013-data-model/documentation/mdocdatamodel18013/eupidmodel)|
+|org.iso.18013.5.1.mDL|[IsoMdlModel](https://eu-digital-identity-wallet.github.io/eudi-lib-ios-iso18013-data-model/documentation/mdocdatamodel18013/isomdlmodel)|
+
+Since the issued mDoc documents retrieved expose only basic metadata and the raw data, they must be decoded to the corresponding CBOR models. The library provides the ``StorageManager\toClaimsModel`` function to decode document raw CBOR data to strongly-typed models conforming to [DocClaimsDecodable](https://eu-digital-identity-wallet.github.io/eudi-lib-ios-iso18013-data-model/documentation/mdocdatamodel18013/DocClaimsDecodable) protocol. 
+
+The loading functions automatically update the ``StorageManager`` members. The decoded issued documents are available in the ``docModels`` property. The deferred and pending documents are available in the ``StorageManager\deferredDocuments`` and ``StorageManager\pendingDocuments`` properties respectively.
+
+For other document types the [GenericMdocModel](https://eu-digital-identity-wallet.github.io/eudi-lib-ios-iso18013-data-model/documentation/mdocdatamodel18013/genericmdocmodel) is provided.
+
+
+### Deleting a document
+
+The `deleteDocument(id:)` method that deletes a document with the given id.
+
+The following example shows how to delete a document:
+
+```swift
+try await wallet.deleteDocument(id: documentId)
+```
+
+## Issue document using OpenID4VCI
+
+The library provides the functionality to issue documents using OpenID4VCI. 
+
+To issue a document
+using this functionality, EudiWallet must be property initialized. 
+If ``userAuthenticationRequired`` is true, user authentication is required. The authentication prompt message has localisation key "issue_document".
+After issuing a document, the document data and corresponding private key are stored in the wallet storage.
+
+### Issue document by docType or credential configuration identifier
+
+When the document docType to be issued use the `issueDocument(issuerName:docTypeIdentifier:credentialOptions:keyOptions:)` method.
+
+* Currently, only mso_mdoc and sd_jwt formats are supported
+
+The following example shows how to issue an EUDI Personal ID document using OpenID4VCI:
+
+```swift
+do {
+  let credentialOptions = CredentialOptions(credentialPolicy: .oneTimeUse, batchSize: 5)
+  let keyOptions = KeyOptions(secureAreaName: "SecureEnclave")
+  let doc = try await userWallet.issueDocument(
+    issuerName: "eudi_pid_issuer", // Specify which issuer to use
+    docTypeIdentifier: .msoMdoc(docType: EuPidModel.euPidDocType),
+    credentialOptions: credentialOptions,
+    keyOptions: keyOptions
+  )
+  // document has been added to wallet storage, you can display it
+}
+catch {
+  // display error
+}
+```
+
+You can also issue a document by passing a configuration identifier. The configuration identifiers can be retrieved from the issuer's metadata using the `getIssuerMetadata(issuerName:)` method.
+
+```swift
+// Get issuer metadata for a specific issuer
+let metadata = try await wallet.getIssuerMetadata(issuerName: "eudi_pid_issuer")
+// Use configuration identifier
+let credentialOptions = CredentialOptions(credentialPolicy: .oneTimeUse, batchSize: 5)
+let keyOptions = KeyOptions(secureAreaName: "SecureEnclave")
+let response = try await userWallet.issueDocuments(
+  issuerName: "eudi_pid_issuer",
+  docTypeIdentifiers: [.identifier("eu.europa.ec.eudi.pid_vc_sd_jwt")],
+  credentialOptions: credentialOptions,
+  keyOptions: keyOptions
+)
+let doc = response.documents.first
+```
+
+For SD-JWT credentials, use the `.sdJwt` identifier:
+
+```swift
+let response = try await userWallet.issueDocuments(
+  issuerName: "eudi_pid_issuer",
+  docTypeIdentifiers: [.identifier(vct: "eu.europa.ec.eudi.pid_vc_sd_jwt")],
+  credentialOptions: CredentialOptions(credentialPolicy: .rotateUse, batchSize: 1),
+  keyOptions: KeyOptions(secureAreaName: "SecureEnclave")
+)
+let doc = response.documents.first
+```
+
+### Issue multiple documents
+
+You can issue multiple documents in a single operation using the `issueDocuments(issuerName:docTypeIdentifiers:credentialOptions:keyOptions:)` method:
+
+```swift
+do {
+  let credentialOptions = CredentialOptions(credentialPolicy: .rotateUse, batchSize: 1)
+  let keyOptions = KeyOptions(secureAreaName: "SecureEnclave")
+  let response = try await wallet.issueDocuments(
+    issuerName: "eudi_pid_issuer",
+    docTypeIdentifiers: [
+       .identifier("eu.europa.ec.eudi.pid_mdoc"),
+       .identifier("eu.europa.ec.eudi.pid_vc_sd_jwt")
+    ],
+    credentialOptions: credentialOptions,
+    keyOptions: keyOptions
+  )
+  // all documents (response.documents) have been added to wallet storage
+}
+catch {
+  // display error
+}
+```
+
+This method efficiently issues multiple documents from the same issuer by creating a single credential offer with all requested document types.
+
+#### Get Default Credential Options
+
+You can retrieve issuer-recommended credential options before issuing:
+
+```swift
+let defaultOptions = try await wallet.getDefaultCredentialOptions(
+  issuerName: "eudi_pid_issuer",
+  docTypeIdentifier: .msoMdoc(docType: EuPidModel.euPidDocType)
+)
+```
+### Resolving Issuer Registration
+
+Use `resolveIssuerRegistration(issuerName:credentialConfigurationIds:)` to check whether an issuer is registered for a given set of credential types **before** starting an issuance flow. This avoids issuing a document only to discover afterwards that the issuer's registration certificate does not cover the requested credential type.
+
+The method returns an `IssuerResponse` with an empty `documents` array, containing the decoded `WrpRegistrationPolicy` and any `RegistrationPolicyViolation` entries.
+
+```swift
+let result = try await wallet.resolveIssuerRegistration(
+    issuerName: "eudi_pid_issuer",
+    credentialConfigurationIds: ["eu.europa.ec.eudi.pid_mdoc"]
+)
+if let policy = result.wrpIssuerPolicy {
+    // Show issuer info: policy.name, policy.country
+}
+if let warnings = result.wrpIssuerWarnings, !warnings.isEmpty {
+    for (configId, violations) in warnings {
+        for violation in violations {
+            switch violation.reason {
+            case .credentialsNotCovered(let ids):
+                // issuer is not registered for credential config ids
+                break
+            case .expired:
+                // registration certificate has expired
+                break
+            default: break
+            }
+        }
+    }
+}
+```
+
+### Resolving Credential offer
+
+The library provides the `resolveOfferUrlDocTypes(offerUri:authFlowRedirectionURI:)` method that resolves the credential offer URI.
+The method returns the resolved `OfferedIssuanceModel` object that contains the offer's data (offered document types, issuer name and transaction code specification for pre-authorized flow). When registration certificate validation is enabled (`OpenId4VciConfiguration.validateRegistrationCertificate`), the model also includes:
+
+- `wrpVciRegistrationPolicy: WrpRegistrationPolicy?` — the parsed issuer registration policy decoded from the WRPRC.
+- `wrpVciWarnings: [String: [RegistrationPolicyViolation]]?` — validation warnings keyed by credential configuration identifier; the empty key holds request-wide warnings. `nil` when validation is not enabled.
+
+The offer's data can be displayed to the user, including issuer registration information and any warnings, before proceeding to issuance.
+
+When a pre-registered issuer can be resolved from `offerUri`, the method uses that issuer's `OpenId4VciConfiguration.issuerMetadataPolicy`.
+
+The following example shows how to resolve a credential offer:
+
+```swift
+ func resolveOfferUrlDocTypes(offerUri: String, authFlowRedirectionURI: URL?) async throws -> OfferedIssuanceModel {
+    return try await wallet.resolveOfferUrlDocTypes(
+      offerUri: offerUri,
+      authFlowRedirectionURI: authFlowRedirectionURI
+    )
+  }
+```
+
+After user acceptance of the offer, the selected documents can be issued using the `issueDocumentsByOfferUrl(offerUri:docTypes:txCodeValue:configuration:)` method.
+The `txCodeValue` parameter is not used in the case of the authorization code flow.
+
+The following example shows how to issue documents by offer URL:
+
+```swift
+// Resolve the offer to get document models with recommended credential options
+let offer = try await wallet.resolveOfferUrlDocTypes(offerUri: offerUrl, authFlowRedirectionURI: nil)
+
+// Use the offered documents as-is with recommended settings, or customize them
+let customizedDocTypes = offer.docModels.map { docModel in
+  // You can customize credential options (batch size, credential policy)
+  docModel.copy(
+    credentialOptions: CredentialOptions(credentialPolicy: .oneTimeUse, batchSize: 2),
+    keyOptions: KeyOptions(secureAreaName: "SecureEnclave")
+  )
+}
+
+// Issue with customized settings
+let newDocs = try await wallet.issueDocumentsByOfferUrl(
+  offerUri: offerUrl,
+  docTypes: customizedDocTypes,
+  txCodeValue: txCode
+)
+```
+
+#### Configuring Issuer Metadata Policy with Certificate Chain Trust
+
+The `TrustConfiguration` derives an `IssuerMetadataPolicy` for you from its `requireSignedMetadata` flag, validating the issuer metadata signing chain against the configured trust anchors. When `requireSignedMetadata` is `true`, `trustConfig.issuerMetadataPolicy` yields a `.requireSigned` policy backed by the trust configuration; when it is `false`, it yields `.ignoreSigned`.
+
+```swift
+// Require signed issuer metadata, validated against the trust configuration's anchors
+let trustConfig = TrustConfiguration(
+  trustSource: .etsi(.eudiRef),
+  fallbackTrustSource: nil,
+  requireSignedMetadata: true
+)
+
+// Apply the derived policy to a specific issuer
+let config = OpenId4VciConfiguration(
+  credentialIssuerURL: "https://issuer.example.com",
+  clientId: "my-wallet",
+  issuerMetadataPolicy: trustConfig.issuerMetadataPolicy
+)
+
+let walletConfig = EudiWalletConfiguration()
+let wallet = try EudiWallet(
+  eudiWalletConfig: walletConfig,
+  trustConfig: trustConfig,
+  openID4VciConfigurations: ["trusted_issuer": config]
+)
+```
+
+The `IssuerMetadataPolicy` enum provides three validation strategies:
+- `.ignoreSigned`: Accept issuer metadata regardless of signature status
+- `.preferSigned(issuerTrust:)`: Prefer signed metadata if available, fall back to unsigned
+- `.requireSigned(issuerTrust:)`: Strictly require signed metadata, reject unsigned metadata
+
+When using `.requireSigned`, the issuer's metadata signature must validate against the trust anchors configured in the `TrustConfiguration`. You can also supply any of these strategies directly on a per-issuer `OpenId4VciConfiguration.issuerMetadataPolicy` to override the derived default.
+
+### Authorization code flow
+
+For the authorization code flow to work, the redirect URI must be specified specified by setting the the `openID4VciRedirectUri` property.
+The user is redirected in an authorization web view to the issuer's authorization endpoint. After the user authenticates and authorizes the request, the issuer redirects the user back to the application with an authorization code. The library exchanges the authorization code for an access token and issues the document.
+
+### Pre-Authorization code flow
+
+When Issuer supports the pre-authorization code flow, the resolved offer will also contain the corresponding
+information. Specifically, the `txCodeSpec` field in the `OfferedIssuanceModel` object will contain:
+
+- The input mode, whether it is NUMERIC or TEXT
+- The expected length of the input
+- The description of the input
+
+From the user's perspective, the application must provide a way to input the transaction code.
+
+After user acceptance of the offer, the selected documents can be issued using the `issueDocumentsByOfferUrl(offerUri:docTypes:txCodeValue:configuration:)` method.
+When the transaction code is provided, the issuance process can be resumed by calling the above-mentioned method and passing the transaction code in the `txCodeValue` parameter.
+
+### Dynamic issuance
+
+Wallet kit supports the Dynamic [PID based issuance](https://github.com/eu-digital-identity-wallet/eudi-wallet-product-roadmap/issues/82)
+
+After calling `issueDocument(issuerName:docTypeIdentifier:credentialOptions:keyOptions:)`, `issueDocuments(issuerName:docTypeIdentifiers:credentialOptions:keyOptions:)`, or `issueDocumentsByOfferUrl(offerUri:docTypes:txCodeValue:configuration:)` the wallet application need to check if the doc is pending and has an `authorizePresentationUrl` property. If the property is present, the application should perform the OpenID4VP presentation using the presentation URL. On success, the `resumePendingIssuance(issuerName:pendingDoc:webUrl:credentialOptions:keyOptions:)` method should be called with the authorization URL provided by the server.
+
+```swift
+if let urlString = newDocs.documents.last?.authorizePresentationUrl { 
+	// perform openid4vp presentation using the urlString 
+	// on success call resumePendingIssuance using the authorization url
+	let resumedDoc = try await wallet.resumePendingIssuance(
+		issuerName: "eudi_pid_issuer",
+		pendingDoc: pendingDocument,
+		webUrl: authorizationURL,
+		credentialOptions: CredentialOptions(credentialPolicy: .rotateUse, batchSize: 1),
+		keyOptions: KeyOptions(secureAreaName: "SecureEnclave")
+	)
+}
+```
+
+#### Deferred Issuance
+
+For deferred document issuance, use the `requestDeferredIssuance(issuerName:deferredDoc:credentialOptions:keyOptions:)` method:
+
+```swift
+let issuedDoc = try await wallet.requestDeferredIssuance(
+	issuerName: "eudi_pid_issuer",
+	deferredDoc: deferredDocument,
+	credentialOptions: CredentialOptions(credentialPolicy: .rotateUse, batchSize: 1),
+	keyOptions: KeyOptions(secureAreaName: "SecureEnclave")
+)
+```
+
+## Presentation Service
+The [presentation service protocol](https://eu-digital-identity-wallet.github.io/eudi-lib-ios-wallet-kit/documentation/eudiwalletkit/presentationservice) abstracts the presentation flow. The [BlePresentationService](https://eu-digital-identity-wallet.github.io/eudi-lib-ios-wallet-kit/documentation/eudiwalletkit/blepresentationservice) and [OpenId4VpService](https://eu-digital-identity-wallet.github.io/eudi-lib-ios-wallet-kit/documentation/eudiwalletkit/openid4vpservice) classes implement the proximity and remote presentation flows respectively. The [PresentationSession](https://eu-digital-identity-wallet.github.io/eudi-lib-ios-wallet-kit/documentation/eudiwalletkit/presentationsession) class is used to wrap the presentation service and provide @Published properties for SwiftUI screens. The following example code demonstrates the initialization of a SwiftUI view with a new presentation session of a selected [flow type](https://eu-digital-identity-wallet.github.io/eudi-lib-ios-wallet-kit/documentation/eudiwalletkit/flowtype).
+
+### BLE Transfer Mode
+
+The `bleTransferMode` property of `EudiWallet` controls the Bluetooth Low Energy role the holder device plays during proximity presentation.
+Set it in `EudiWalletConfiguration` at initialization time, or update it on the wallet instance before starting BLE presentation:
+
+| Mode | Description |
+|------|-------------|
+| `.server` (default) | The holder device acts as a GATT peripheral (server). It advertises and waits for the reader to connect. |
+| `.client` | The holder device acts as a GATT central (client). It scans and connects to the reader's peripheral. |
+| `.both` | The holder device supports both peripheral server and central client modes simultaneously. |
+
+```swift
+// Configure BLE transfer mode
+let config = EudiWalletConfiguration(
+    bleTransferMode: .server  // default
+)
+let trustConfig = TrustConfiguration(trustSource: .etsi(.eudiRef), fallbackTrustSource: nil)
+let wallet = try! EudiWallet(eudiWalletConfig: config, trustConfig: trustConfig)
+wallet.bleTransferMode = .client
+```
+
+```swift
+let session = eudiWallet.beginPresentation(flow: flow)
+// pass the session to a SwiftUI view
+ShareView(presentationSession: session)
+```
+
+On view appearance the attestations are presented with the receiveRequest method. For the BLE (proximity) case the deviceEngagement property is populated with the QR code to be displayed on the holder device.
+
+```swift
+.task {
+	 if presentationSession.flow.isProximity { await presentationSession.startQrEngagement() }
+	 _ = await presentationSession.receiveRequest()
+}
+```
+After the request is received the ``presentationSession.disclosedDocumentSets`` contains an array of credential selection options. Each element is a `[DocElements]` representing one valid combination of credentials that satisfies the query. The selected state of the items can be modified via UI binding. Finally, the response is sent with the following code. The optional `deviceNameSpacesToSend` parameter can be used to include device-signed namespaces in the response:
+
+```swift
+// Use the first credential selection option (or let the user choose)
+let selectedOption = presentationSession.disclosedDocumentSets.first ?? []
+
+// Send the disclosed document items after biometric authentication (FaceID or TouchID)
+// if the user cancels biometric authentication, onCancel method is called
+ await presentationSession.sendResponse(userAccepted: true,
+  itemsToSend: selectedOption.items, onCancel: { dismiss() }, onSuccess: {
+			if let url = $0 { 
+        // handle URL
+       }
+		})
+```
+
+### Registration Certificate (WRPRC)
+
+The wallet validates the Wallet-Relying Party Registration Certificate (WRPRC) that a relying party may present with a data-sharing request, per [ETSI TS 119 475](https://www.etsi.org/standards) and Commission Implementing Regulation (EU) 2025/848 Article 8(2). The outcome is surfaced to the application so the user can be informed before sharing. During OpenID4VCI issuance the wallet can also validate the WRPRC published by the credential issuer.
+
+The WRPRC is carried as a `euWrprc` byte string in proximity requests (ETSI TS 119 472-2 §5.3.2), as a `verifier_info` element in OpenID4VP requests (§6.3.2.2), or as a `registration_cert` entry in the `issuer_info` of the signed issuer metadata (OpenID4VCI).
+
+#### Configuration
+
+Trust for WRPRC validation is configured through `TrustConfiguration`:
+
+```swift
+let trustConfig = TrustConfiguration(
+    trustSource: .etsi(.eudiRef),
+    fallbackTrustSource: nil,
+    wrprcVpTrustPolicy: .enforce,  // presentation: .enforce (default) or .warning
+    wrprcVciTrustPolicy: .enforce  // issuance: .enforce (default) or .warning
+)
+```
+
+- `.enforce` — validation failure causes the request to fail.
+- `.warning` — validation failure is added to warnings; the request continues.
+
+`wrprcVpTrustPolicy` controls the behaviour during OpenID4VP and BLE presentation. `wrprcVciTrustPolicy` controls the behaviour during OpenID4VCI issuance.
+
+For OpenID4VP, validation is controlled by `OpenId4VpConfiguration.validateRegistrationCertificate` (enabled by default) and performed by `WrpVpRegistrationValidator`. For BLE proximity requests, the validator is used internally when the request carries a WRPRC.
+
+For OpenID4VCI issuance, set `OpenId4VciConfiguration.validateRegistrationCertificate` (disabled by default) to validate the issuer WRPRC with `WrpVciRegistrationValidator`. This requires `issuerMetadataPolicy` to be `.requireSigned`, since WRPRC enforcement needs a cryptographically bound issuer metadata signer to supply the WRPAC.
+
+#### Reading the outcome — presentation
+
+After receiving a request, the result is available on `PresentationSession`:
+
+- `wrpVerifierPolicy: WrpRegistrationPolicy?` — the parsed registration (name, country, purpose, registered credentials).
+- `wrpVerifierWarnings: [String: [PresentationPolicyViolation]]?` — validation warnings keyed by credential query identifier; the empty key holds request-wide warnings, including over-asked claims.
+
+Each `DisclosedDocumentSet` in `disclosedDocumentSets` also carries per-option `warnings: [PresentationPolicyViolation]?` for policy violations specific to that credential combination.
+
+```swift
+if let registration = presentationSession.wrpVerifierPolicy {
+    // Show relying party info: registration.name, registration.country, registration.purpose
+}
+if let warnings = presentationSession.wrpVerifierWarnings?[""], !warnings.isEmpty {
+    // Warn the user about validation issues or over-asked claims
+}
+```
+
+#### Reading the outcome — issuance
+
+The `issueDocuments` and `issueDocumentsByOfferUrl` methods return an `IssuerResponse` that pairs the issued documents with the WRPRC outcome:
+
+- `documents: [WalletStorage.Document]` — the issued documents (already saved in storage).
+- `wrpIssuerPolicy: WrpRegistrationPolicy?` — the parsed issuer registration, including the attestations it is registered to provide.
+- `wrpIssuerWarnings: [String: [RegistrationPolicyViolation]]?` — warnings keyed by credential configuration identifier; the empty key holds request-wide warnings.
+- `documentWarnings` — computed property matching the warnings to each issued document by its credential configuration identifier.
+
+```swift
+let response = try await wallet.issueDocumentsByOfferUrl(offerUri: offerUri, docTypes: docTypes)
+if let issuerRegistration = response.wrpIssuerPolicy {
+    // Show issuer info: issuerRegistration.name, issuerRegistration.country
+}
+for (documentId, warnings) in response.documentWarnings {
+    // Warn the user about registration policy violations for this document
+}
+```
+
+## Logging
+The SwiftLog library is used for logging. The library provides a default logger that logs to the console. The main app configures logging outputs such as file logging.
+To use the logger create a logger instance with the desired label. The logger can be used to log messages with different log levels.
+```swift
+import Logging
+// Create a logger with a label
+let logger = Logger(label: "com.example.BestExampleApp.main")
+// log an info message
+logger.info("Hello World!")
+```
+
+## Reference
+Detailed documentation is provided in the DocC documentation [here](https://eu-digital-identity-wallet.github.io/eudi-lib-ios-wallet-kit/documentation/eudiwalletkit/) 
+
+### Dependencies
+
+| Package Name | Package URL | License |
+|-------------|-------------|---------|
+| swift-log | https://github.com/apple/swift-log.git | Apache-2.0 License |
+| swift-log-file | https://github.com/crspybits/swift-log-file | MIT License |
+| eudi-lib-ios-iso18013-data-transfer | https://github.com/eu-digital-identity-wallet/eudi-lib-ios-iso18013-data-transfer.git | Apache-2.0 License |
+| eudi-lib-ios-wallet-storage | https://github.com/eu-digital-identity-wallet/eudi-lib-ios-wallet-storage.git | Apache-2.0 License |
+| eudi-lib-sdjwt-swift | https://github.com/eu-digital-identity-wallet/eudi-lib-sdjwt-swift.git | Apache-2.0 License |
+| eudi-lib-ios-siop-openid4vp-swift | https://github.com/eu-digital-identity-wallet/eudi-lib-ios-siop-openid4vp-swift.git | Apache-2.0 License |
+| eudi-lib-ios-openid4vci-swift | https://github.com/eu-digital-identity-wallet/eudi-lib-ios-openid4vci-swift.git | Apache-2.0 License |
+| eudi-lib-ios-statium-swift | https://github.com/eu-digital-identity-wallet/eudi-lib-ios-statium-swift.git | Apache-2.0 License |
+| SwiftCopyableMacro | https://github.com/eu-digital-identity-wallet/SwiftCopyableMacro.git | Apache-2.0 License |
+
+
+### Reference application  
+A reference application that demonstrates the usage of this library is [App Wallet UI](https://github.com/eu-digital-identity-wallet/eudi-app-ios-wallet-ui).
+
+## How to contribute
+
+We welcome contributions to this project. To ensure that the process is smooth for everyone
+involved, follow the guidelines found in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+### License details
+
+Copyright (c) 2026 European Commission
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

@@ -1,0 +1,19 @@
+// SPDX-License-Identifier: EUPL-1.2
+//
+//  Shared.xcconfig
+//  edim
+//
+//  Committed, non-secret build configuration shared by all targets.
+//
+//  Signing identity is intentionally NOT hard-coded here. Copy
+//  `Local.xcconfig.example` to `Local.xcconfig` (gitignored) and put your own
+//  Apple Developer Team ID there. When `Local.xcconfig` is absent the build
+//  falls back to an empty team, which is what you want for CI and for external
+//  contributors using automatic signing with their own account.
+
+// Default (empty) -> Xcode uses the team selected in the Signing & Capabilities tab.
+EDIM_DEVELOPMENT_TEAM =
+
+// Optional local override. `#include?` (with the question mark) does not fail
+// when the file is missing, so the project still builds on a clean checkout.
+#include? "Local.xcconfig"

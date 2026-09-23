@@ -1,0 +1,372 @@
+/*
+ * Copyright (c) 2026 European Commission
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import Testing
+@testable import EudiWalletKit
+import Foundation
+import MdocDataModel18013
+import MdocDataTransfer18013
+
+// TODO: Add tests for PresentationSession:
+// - startQrEngagement (BLE authorized / unauthorized scenarios)
+// - receiveRequest / disclosedDocuments handling
+// - setError state transitions
+// - sendResponse / responseSent status
+
+@Suite("PresentationSession tests")
+struct PresentationSessionTests {
+    // MARK: - WalletError init backward compatibility
+    // MARK: - WalletError backward compatibility
+
+    @Test("WalletError init with all params")
+    func testWalletErrorInitBackwardCompat() {
+        let error = WalletError(description: "test error", code: .internalError)
+        #expect(error.description == "test error")
+        #expect(error.localizationKey == nil)
+        #expect(error.code == .internalError)
+        #expect(error.context.isEmpty)
+    }
+
+    @Test("WalletError init with localizationKey")
+    func testWalletErrorInitWithLocalizationKey() {
+        let error = WalletError(description: "test", localizationKey: "some_key", code: .internalError)
+        #expect(error.localizationKey == "some_key")
+        #expect(error.code == .internalError)
+    }
+
+    @Test("WalletError init with code only")
+    func testWalletErrorInitWithCode() {
+        let error = WalletError(description: "test", code: .bleNotAuthorized)
+        #expect(error.code == .bleNotAuthorized)
+        #expect(error.localizationKey == nil)
+    }
+
+    @Test("WalletError init with both localizationKey and code")
+    func testWalletErrorInitWithBoth() {
+        let error = WalletError(description: "test", localizationKey: "key", code: .noDocumentsAvailable)
+        #expect(error.localizationKey == "key")
+        #expect(error.code == .noDocumentsAvailable)
+        #expect(error.context.isEmpty)
+    }
+
+    @Test("WalletError init with claimNotFound code")
+    func testWalletErrorInitWithClaimNotFound() {
+        let error = WalletError(description: "test", code: .claimNotFound)
+        #expect(error.code == .claimNotFound)
+        #expect(error.localizationKey == nil)
+    }
+
+    @Test("WalletError init with context")
+    func testWalletErrorInitWithContext() {
+        let error = WalletError(description: "claim missing", code: .claimNotFound, context: ["claimPath": "org.iso.18013.5.1/portrait"])
+        #expect(error.code == .claimNotFound)
+        #expect(error.context["claimPath"] == "org.iso.18013.5.1/portrait")
+    }
+
+    @Test("WalletError init without context defaults to empty")
+    func testWalletErrorInitContextDefault() {
+        let error = WalletError(description: "test", code: .internalError)
+        #expect(error.context.isEmpty)
+    }
+
+    // MARK: - mapTransferError
+
+    @Test("mapTransferError maps BLE_NOT_AUTHORIZED to .bleNotAuthorized")
+    func testMapBleNotAuthorized() {
+        let nsError = MdocHelpers.makeError(code: .bleNotAuthorized)
+        let result = PresentationSession.mapTransferError(nsError)
+        #expect(result == .bleNotAuthorized)
+    }
+
+    @Test("mapTransferError maps BLE_NOT_SUPPORTED to .bleNotSupported")
+    func testMapBleNotSupported() {
+        let nsError = MdocHelpers.makeError(code: .bleNotSupported)
+        let result = PresentationSession.mapTransferError(nsError)
+        #expect(result == .bleNotSupported)
+    }
+
+    @Test("mapTransferError returns nil for unrelated transfer error codes")
+    func testMapUnrelatedErrorCode() {
+        let nsError = MdocHelpers.makeError(code: .userRejected)
+        let result = PresentationSession.mapTransferError(nsError)
+        #expect(result == nil)
+    }
+
+    @Test("mapTransferError returns nil for non-transfer errors")
+    func testMapNonTransferError() {
+        let error = NSError(domain: "SomeOtherDomain", code: 999, userInfo: nil)
+        let result = PresentationSession.mapTransferError(error)
+        #expect(result == nil)
+    }
+
+    // MARK: - WalletError init with code
+
+    @Test("WalletError with code")
+    func testMakeErrorWithCode() {
+        let error = WalletError(description: "BLE error", code: .bleNotAuthorized)
+        #expect(error.code == .bleNotAuthorized)
+        #expect(error.description == "BLE error")
+    }
+
+    @Test("WalletError with internalError code")
+    func testMakeErrorWithoutCode() {
+        let error = WalletError(description: "generic error", code: .internalError)
+        #expect(error.code == .internalError)
+        #expect(error.localizationKey == nil)
+    }
+
+    @Test("WalletError with localizationKey and code")
+    func testMakeErrorWithLocalizationKeyAndCode() {
+        let error = WalletError(description: "no docs", localizationKey: "request_data_no_document", code: .noDocumentsAvailable)
+        #expect(error.code == .noDocumentsAvailable)
+        #expect(error.localizationKey == "request_data_no_document")
+    }
+
+    // MARK: - WalletError innerError
+
+    @Test("WalletError preserves innerError")
+    func testWalletErrorInnerError() {
+        let underlying = NSError(domain: "TestDomain", code: 42, userInfo: nil)
+        let error = WalletError(description: "wrapper", code: .authorizationFailed, innerError: underlying)
+        #expect(error.code == .authorizationFailed)
+        let inner = error.innerError as? NSError
+        #expect(inner?.code == 42)
+        #expect(inner?.domain == "TestDomain")
+    }
+
+    @Test("WalletError innerError defaults to nil")
+    func testWalletErrorInnerErrorDefault() {
+        let error = WalletError(description: "no inner", code: .internalError)
+        #expect(error.innerError == nil)
+    }
+
+    // MARK: - IssuingParty
+
+    @Test("IssuingParty stores issuer info")
+    func testIssuingParty() {
+        let party = TransactionLog.IssuingParty(name: "Test Issuer", identifier: "https://issuer.example.com", logoUrl: "https://issuer.example.com/logo.png")
+        #expect(party.name == "Test Issuer")
+        #expect(party.identifier == "https://issuer.example.com")
+        #expect(party.logoUrl == "https://issuer.example.com/logo.png")
+    }
+
+    @Test("IssuingParty with nil logoUrl")
+    func testIssuingPartyWithoutLogo() {
+        let party = TransactionLog.IssuingParty(name: "Issuer", identifier: "https://issuer.example.com", logoUrl: nil)
+        #expect(party.logoUrl == nil)
+    }
+
+    // MARK: - RelyingParty
+
+    @Test("RelyingParty uses WRP registration legal name")
+    func testRelyingPartyUsesLegalName() {
+        var requestInfo = UserRequestInfo(docDataFormats: [:], itemsRequested: [:])
+        requestInfo.readerAuthResults = [
+            "": ReaderAuthenticationResult(
+                isValidated: true,
+                certificateIssuer: "Access Certificate CN",
+                legalName: "WRP Registration Identity"
+            )
+        ]
+        let wrpVpPolicy = WrpRegistrationPolicy(sub: "registration-sub", credentials: [], name: "WRP Registration Identity")
+
+        let relyingParty = TransactionLogUtils.getRelyingParty(requestInfo, wrpVpPolicy: wrpVpPolicy)
+
+        #expect(relyingParty?.name == "WRP Registration Identity")
+        #expect(relyingParty?.isVerified == true)
+    }
+
+    @Test("RelyingParty falls back to WRP registration subject")
+    func testRelyingPartyFallsBackToWrpRegistrationSubject() {
+        var requestInfo = UserRequestInfo(docDataFormats: [:], itemsRequested: [:])
+        requestInfo.readerAuthResults = [
+            "": ReaderAuthenticationResult(
+                isValidated: true,
+                certificateIssuer: "Access Certificate CN",
+                legalName: "Resolved Legal Name"
+            )
+        ]
+		let wrpVpPolicy = WrpRegistrationPolicy(sub: "sub", credentials: [], name: "registration-name")
+        let relyingParty = TransactionLogUtils.getRelyingParty(requestInfo, wrpVpPolicy: wrpVpPolicy)
+        #expect(relyingParty?.name == "registration-name")
+        #expect(relyingParty?.isVerified == true)
+    }
+
+    @Test("RelyingParty falls back to certificate issuer")
+    func testRelyingPartyFallsBackToCertificateIssuer() {
+        var requestInfo = UserRequestInfo(docDataFormats: [:], itemsRequested: [:])
+        requestInfo.readerAuthResults = [
+            "": ReaderAuthenticationResult(
+                isValidated: false,
+                certificateIssuer: "Access Certificate CN"
+            )
+        ]
+
+        let relyingParty = TransactionLogUtils.getRelyingParty(requestInfo, wrpVpPolicy: nil)
+
+        #expect(relyingParty?.name == "Access Certificate CN")
+        #expect(relyingParty?.isVerified == false)
+    }
+
+    // MARK: - IssuanceLogData
+
+    @Test("IssuanceLogData parses from TransactionLog")
+    func testIssuanceLogData() {
+        let issuingParty = TransactionLog.IssuingParty(name: "Test Issuer", identifier: "https://issuer.example.com", logoUrl: nil)
+        let log = TransactionLog(
+            timestamp: 1700000000,
+            status: .completed,
+            issuingParty: issuingParty,
+            type: .issuance,
+            dataFormat: .cbor
+        )
+        let data = IssuanceLogData(log)
+        #expect(data.status == .completed)
+        #expect(data.issuingParty.name == "Test Issuer")
+        #expect(data.issuingParty.identifier == "https://issuer.example.com")
+        #expect(data.dataFormat == .cbor)
+        #expect(data.errorMessage == nil)
+    }
+
+    @Test("IssuanceLogData with failed status and error message")
+    func testIssuanceLogDataFailed() {
+        let log = TransactionLog(
+            timestamp: 1700000000,
+            status: .failed,
+            errorMessage: "Proof invalid",
+            type: .issuance,
+            dataFormat: .json
+        )
+        let data = IssuanceLogData(log)
+        #expect(data.status == .failed)
+        #expect(data.errorMessage == "Proof invalid")
+        #expect(data.issuingParty.name == "Unknown Issuer")
+    }
+
+    @Test("IssuanceLogData without issuingParty falls back to Unknown Issuer")
+    func testIssuanceLogDataFallback() {
+        let log = TransactionLog(
+            timestamp: 1700000000,
+            status: .completed,
+            type: .issuance,
+            dataFormat: .cbor
+        )
+        let data = IssuanceLogData(log)
+        #expect(data.issuingParty.name == "Unknown Issuer")
+        #expect(data.issuingParty.identifier == "")
+    }
+
+    // MARK: - TransactionLog with issuance type
+
+    @Test("TransactionLog with issuance type and issuingParty")
+    func testTransactionLogIssuance() {
+        let issuingParty = TransactionLog.IssuingParty(name: "Issuer", identifier: "https://issuer.example.com", logoUrl: nil)
+        let log = TransactionLog(
+            timestamp: 1700000000,
+            status: .completed,
+            issuingParty: issuingParty,
+            type: .issuance,
+            dataFormat: .cbor
+        )
+        #expect(log.type == .issuance)
+        #expect(log.issuingParty?.name == "Issuer")
+        #expect(log.relyingParty == nil)
+    }
+
+    @Test("TransactionLog backward compatibility — issuingParty defaults to nil")
+    func testTransactionLogIssuingPartyDefault() {
+        let log = TransactionLog(
+            timestamp: 1700000000,
+            status: .completed,
+            type: .presentation,
+            dataFormat: .cbor
+        )
+        #expect(log.issuingParty == nil)
+    }
+
+    // MARK: - DeletionLogData
+
+    @Test("DeletionLogData parses from TransactionLog")
+    func testDeletionLogData() {
+        let log = TransactionLog(
+            timestamp: 1700000000,
+            status: .completed,
+            type: .deletion,
+            dataFormat: .cbor,
+            documentId: "doc-123",
+            docType: "eu.europa.ec.eudi.pid.1",
+            displayName: "EU PID"
+        )
+        let data = DeletionLogData(log)
+        #expect(data.status == .completed)
+        #expect(data.documentId == "doc-123")
+        #expect(data.docType == "eu.europa.ec.eudi.pid.1")
+        #expect(data.displayName == "EU PID")
+        #expect(data.dataFormat == .cbor)
+        #expect(data.errorMessage == nil)
+    }
+
+    @Test("DeletionLogData with failed status and error message")
+    func testDeletionLogDataFailed() {
+        let log = TransactionLog(
+            timestamp: 1700000000,
+            status: .failed,
+            errorMessage: "Storage error",
+            type: .deletion,
+            dataFormat: .json
+        )
+        let data = DeletionLogData(log)
+        #expect(data.status == .failed)
+        #expect(data.errorMessage == "Storage error")
+        #expect(data.documentId == nil)
+    }
+
+    @Test("DeletionLogData without optional fields defaults to nil")
+    func testDeletionLogDataDefaults() {
+        let log = TransactionLog(
+            timestamp: 1700000000,
+            status: .completed,
+            type: .deletion,
+            dataFormat: .cbor
+        )
+        let data = DeletionLogData(log)
+        #expect(data.documentId == nil)
+        #expect(data.docType == nil)
+        #expect(data.displayName == nil)
+        #expect(data.errorMessage == nil)
+    }
+
+    // MARK: - TransactionLog with deletion type
+
+    @Test("TransactionLog with deletion type")
+    func testTransactionLogDeletion() {
+        let log = TransactionLog(
+            timestamp: 1700000000,
+            status: .completed,
+            type: .deletion,
+            dataFormat: .cbor,
+            documentId: "doc-456",
+            docType: "org.iso.18013.5.1.mDL",
+            displayName: "Mobile Driving License"
+        )
+        #expect(log.type == .deletion)
+        #expect(log.documentId == "doc-456")
+        #expect(log.docType == "org.iso.18013.5.1.mDL")
+        #expect(log.displayName == "Mobile Driving License")
+        #expect(log.issuingParty == nil)
+        #expect(log.relyingParty == nil)
+    }
+}

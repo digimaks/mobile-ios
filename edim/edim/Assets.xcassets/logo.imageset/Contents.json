@@ -1,0 +1,35 @@
+{
+  "images" : [
+    {
+      "filename" : "iOS 19.png",
+      "idiom" : "universal"
+    },
+    {
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "light"
+        }
+      ],
+      "filename" : "iOS 18.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "iOS 18 dark.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

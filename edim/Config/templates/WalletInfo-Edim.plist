@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- OpenID4VCI wallet configuration. Shared by both build flavours. -->
+
+	<!-- Require device authentication before keys are used. Keep true in production. -->
+	<key>AuthRequired</key>
+	<true/>
+
+	<!-- OAuth client identifier registered with your credential issuer. -->
+	<key>ClientID</key>
+	<string>your-wallet-client-id</string>
+
+	<!-- Appended to the backend BaseURL to reach the issuer. -->
+	<key>IssuerURL</key>
+	<string>/wallet</string>
+
+	<!-- Must match a URL scheme declared in Info.plist (CFBundleURLSchemes). -->
+	<key>RedirectURI</key>
+	<string>eudi-openid4ci://authorize/</string>
+</dict>
+</plist>

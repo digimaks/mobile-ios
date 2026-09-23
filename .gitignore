@@ -1,0 +1,60 @@
+# Xcode Project
+**/*.xcodeproj/xcuserdata/
+**/*.xcworkspace/xcuserdata/
+**/.swiftpm/xcode/xcuserdata/
+**/*.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+**/*.xcworkspace/xcshareddata/*.xccheckout
+**/*.xcworkspace/xcshareddata/*.xcscmblueprint
+**/*.playground/**/timeline.xctimeline
+.idea/
+
+# Build
+**/.build/
+**/Build/
+DerivedData/
+*.ipa
+
+# Carthage
+Carthage/
+
+# CocoaPods
+Pods/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/sign&cert
+
+# CSV
+*.orig
+.svn
+
+# Other
+*~
+.DS_Store
+*.swp
+*.save
+._*
+*.bak
+
+# Mobile UI
+
+dist
+node_modules
+
+edim/Config/Local.xcconfig
+
+
+edim/edim/API/Backend-Edim.plist
+edim/edim/API/Local communication/Bases/Base-Prod.plist
+edim/edim/API/Local communication/Bases/Base-Dev.plist
+edim/edim/Resources/WalletInfo-Edim.plist
+!edim/Config/templates/**
+
+edim/edim/GoogleService-Info.plist
+firebase-debug.log*
+.firebase/
+
+edim/edim/Resources/*.der

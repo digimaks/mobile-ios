@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Scheme + host of your backend, with no trailing slash. -->
+	<key>BaseURL</key>
+	<string>https://api.example.com</string>
+
+	<!-- Paths below are appended to BaseURL at runtime. -->
+	<key>IDAuthBaseURL</key>
+	<string>/idauth</string>
+	<key>EparakstsWalletBaseUrl</key>
+	<string>/wallet</string>
+	<key>EparakstsAuth</key>
+	<string>/idauth/authorize?response_type=code&amp;client_id={4}&amp;redirect_uri=myapp%3A%2F%2Fauth-done&amp;code_challenge={0}&amp;code_challenge_method=S256&amp;acr_values={1}&amp;state={2}&amp;scope=profile</string>
+	<key>SessionBaseURL</key>
+	<string>/idauth/api/1.0</string>
+	<key>WalletBaseURL</key>
+	<string>/wallet/1.0</string>
+	<key>PersonBaseURL</key>
+	<string>/api/1.0/person</string>
+</dict>
+</plist>

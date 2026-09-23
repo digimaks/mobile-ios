@@ -1,0 +1,66 @@
+/*
+Copyright (c) 2026 European Commission
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import Foundation
+import MdocDataModel18013
+import MdocSecurity18013
+import MdocDataTransfer18013
+
+/// Configuration for EudiWallet
+public struct EudiWalletConfiguration: Sendable {
+    /// The service name for the keychain
+	public let serviceName: String
+	/// The [access group](https://developer.apple.com/documentation/security/ksecattraccessgroup) that documents are stored in.
+	public let accessGroup: String?
+    /// Whether user authentication via biometrics or passcode is required before sending user data
+	public let userAuthenticationRequired: Bool
+	/// Method to perform mdoc authentication (MAC or signature). Defaults to device signature
+	public let deviceAuthMethod: DeviceAuthMethod
+	/// preferred UI culture for localization of display names. It must be a 2-letter language code. If not set, the system locale is used
+	public var uiCulture: String?
+	/// If not-nil, logging to the specified log file name will be configured
+	public let logFileName: String?
+	/// BLE transfer mode for proximity presentation. Controls the role the device plays during BLE data transfer.
+	/// - `.server` (default): The holder device acts as a GATT peripheral (server), advertising and waiting for the reader to connect.
+	/// - `.client`: The holder device acts as a GATT central (client), scanning and connecting to the reader's peripheral.
+	/// - `.both`: The holder device supports both peripheral server and central client modes simultaneously.
+	public let bleTransferMode: BleTransferMode
+	/// Optional factory for creating custom BLE transport instances (e.g., L2CAP, BLE client mdoc).
+	/// When `nil`, the default GATT server/central transports are used.
+	public let bleTransportFactory: (any BleTransportFactory)?
+	/// Default service name for the keychain, used if no service name is provided in the initializer
+	static let defaultServiceName: String = "eudiw"
+
+	public init(
+		serviceName: String? = nil,
+		accessGroup: String? = nil,
+		userAuthenticationRequired: Bool = false,
+		deviceAuthMethod: DeviceAuthMethod = .deviceSignature,
+		uiCulture: String? = nil,
+		logFileName: String? = nil,
+		bleTransferMode: BleTransferMode = .server,
+		bleTransportFactory: (any BleTransportFactory)? = nil
+	) {
+		self.serviceName = serviceName ?? Self.defaultServiceName
+		self.accessGroup = accessGroup
+        self.userAuthenticationRequired = userAuthenticationRequired
+		self.deviceAuthMethod = deviceAuthMethod
+		self.uiCulture = uiCulture
+		self.logFileName = logFileName
+		self.bleTransferMode = bleTransferMode
+		self.bleTransportFactory = bleTransportFactory
+	}
+}

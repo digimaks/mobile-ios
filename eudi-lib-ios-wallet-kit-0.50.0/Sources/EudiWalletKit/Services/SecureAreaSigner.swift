@@ -1,0 +1,81 @@
+/*
+Copyright (c) 2026 European Commission
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import Foundation
+@preconcurrency import LocalAuthentication
+import MdocDataModel18013
+@preconcurrency import JOSESwift
+import JSONWebAlgorithms
+import OpenID4VCI
+
+final class SecureAreaSigner: AsyncSignerProtocol, @unchecked Sendable {
+	let id: String
+	let index: Int
+	let secureArea: SecureArea
+	let curve: CoseEcCurve
+	public let publicKey: any JOSESwift.JWK
+	let ecAlgorithm: MdocDataModel18013.SigningAlgorithm
+	let algorithm: JOSESwift.SignatureAlgorithm
+	let signature: Data?
+	let unlockData: Data?
+	let context: ThreadSafeAuthContext
+
+	init(secureArea: SecureArea, id: String, index: Int, publicKey: any JOSESwift.JWK, curve: CoseEcCurve, ecAlgorithm: MdocDataModel18013.SigningAlgorithm, unlockData: Data?, context: ThreadSafeAuthContext) throws {
+		self.id = id
+		self.index = index
+		self.secureArea = secureArea
+		self.curve = curve
+		self.ecAlgorithm = ecAlgorithm
+		self.algorithm = try Self.getSignatureAlgorithm(ecAlgorithm)
+		signature = nil
+		self.unlockData = unlockData
+		self.context = context
+		self.publicKey = publicKey
+	}
+
+	static func getSignatureAlgorithm(_ sa: MdocDataModel18013.SigningAlgorithm) throws -> JOSESwift.SignatureAlgorithm {
+		switch sa {
+		case .ES256: return .ES256
+		case .ES384: return .ES384
+		case .ES512: return .ES512
+		case .EDDSA: throw WalletError(description: "EdDSA is not supported by JOSESwift, use JSONWebAlgorithms instead.", code: .unsupportedAlgorithm)
+		default: throw WalletError(description: "Invalid signing algorithm: \(sa.rawValue).", code: .unsupportedAlgorithm)
+		}
+	}
+
+	static func getSigningAlgorithm(_ sa: MdocDataModel18013.SigningAlgorithm) throws -> JSONWebAlgorithms.SigningAlgorithm {
+		switch sa {
+		case .ES256: return .ES256
+		case .ES384: return .ES384
+		case .ES512: return .ES512
+		case .EDDSA: return .EdDSA
+		default: throw WalletError(description: "Invalid signing algorithm: \(sa.rawValue).", code: .unsupportedAlgorithm)
+		}
+	}
+
+	func sign(_ signingInput: Data) async throws -> Data {
+		let ecdsaSignature = try await secureArea.signature(id: id, index: index, algorithm: ecAlgorithm, dataToSign: signingInput, unlockData: unlockData, authenticationContext: context)
+		return ecdsaSignature
+	}
+
+	func signAsync(_ header: Data, _ payload: Data) async throws -> Data {
+		logger.info("Sign async JWT in secure area \(type(of: secureArea).name)")
+		let signingInput: Data? = [header as DataConvertible, payload as DataConvertible].map { $0.data().base64URLEncodedString() }.joined(separator: ".").data(using: .ascii)
+      	guard let signingInput else { throw ValidationError.error(reason: "Invalid signing input for signing data") }
+		return try await sign(signingInput)
+	}
+
+}

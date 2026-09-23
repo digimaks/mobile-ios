@@ -1,0 +1,1198 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B800CF8A2DE44B9200FE10D0 /* EudiWalletKit in Frameworks */ = {isa = PBXBuildFile; productRef = B800CF892DE44B9200FE10D0 /* EudiWalletKit */; };
+		B82249D62CEF2F2C0065C598 /* AuthWrapperPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B82249D52CEF2F2C0065C598 /* AuthWrapperPackage */; };
+		B82249D92CEF301A0065C598 /* UIWrapperPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B82249D82CEF301A0065C598 /* UIWrapperPackage */; };
+		B82249DC2CEF38C80065C598 /* NetworkWrapperPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B82249DB2CEF38C80065C598 /* NetworkWrapperPackage */; };
+		B8225FCC2CEF43000065C598 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = B8225FCB2CEF43000065C598 /* Moya */; };
+		B82A69642D8AFE1400D498E9 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = B82A69632D8AFE1400D498E9 /* ZIPFoundation */; };
+		B831487F2F716C9800A2E503 /* EudiWalletKit in Frameworks */ = {isa = PBXBuildFile; productRef = B831487E2F716C9800A2E503 /* EudiWalletKit */; };
+		B837567C2F90B8E200462D04 /* EudiWalletKit in Frameworks */ = {isa = PBXBuildFile; productRef = B837567B2F90B8E200462D04 /* EudiWalletKit */; };
+		B839D1752FCEB7FD00054C62 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = B839D1742FCEB7FD00054C62 /* FirebaseCore */; };
+		B839D1772FCEB80A00054C62 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = B839D1762FCEB80A00054C62 /* FirebaseCrashlytics */; };
+		B839D1792FCEB85200054C62 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B839D1782FCEB85200054C62 /* SnapKit */; };
+		B839D17A2FCEB91A00054C62 /* SigningFileExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B89321E12D9C36B200F9016B /* SigningFileExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B8464F302DE7354D009CE76F /* EudiWalletKit in Frameworks */ = {isa = PBXBuildFile; productRef = B8464F2F2DE7354D009CE76F /* EudiWalletKit */; };
+		B84979912CE7883B00ABCF00 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B84979902CE7883B00ABCF00 /* SnapKit */; };
+		B86016F22CF722FD008E815F /* QRCodeScannerPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B86016F12CF722FD008E815F /* QRCodeScannerPackage */; };
+		B884678B2F3B232000DF6E8D /* AuthWrapperPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B884678A2F3B232000DF6E8D /* AuthWrapperPackage */; };
+		B884678D2F3B232000DF6E8D /* UIWrapperPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B884678C2F3B232000DF6E8D /* UIWrapperPackage */; };
+		B884678F2F3B232000DF6E8D /* NetworkWrapperPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B884678E2F3B232000DF6E8D /* NetworkWrapperPackage */; };
+		B88467912F3B232000DF6E8D /* QRCodeScannerPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B88467902F3B232000DF6E8D /* QRCodeScannerPackage */; };
+		B88467932F3B232000DF6E8D /* DeviceInformationPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B88467922F3B232000DF6E8D /* DeviceInformationPackage */; };
+		B88467952F3B232000DF6E8D /* UtilitiesPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B88467942F3B232000DF6E8D /* UtilitiesPackage */; };
+		B88467972F3B232000DF6E8D /* KeychainWrapperPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B88467962F3B232000DF6E8D /* KeychainWrapperPackage */; };
+		B88467992F3B233100DF6E8D /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = B88467982F3B233100DF6E8D /* Moya */; };
+		B884679B2F3B233D00DF6E8D /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B884679A2F3B233D00DF6E8D /* RealmSwift */; };
+		B884679C2F3B233D00DF6E8D /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = B884679A2F3B233D00DF6E8D /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		B88467A12F3B236400DF6E8D /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = B88467A02F3B236400DF6E8D /* ZIPFoundation */; };
+		B88CD0312F9F352E00B158BC /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = B88CD0302F9F352E00B158BC /* FirebaseCore */; };
+		B88CFD8E2F9F386E00B158BC /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = B88CFD8D2F9F386E00B158BC /* FirebaseCrashlytics */; };
+		B88EDD4E2E1514250054A824 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B88EDD4D2E1514250054A824 /* RealmSwift */; };
+		B892587D2CF8A729002A0D65 /* DeviceInformationPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B892587C2CF8A729002A0D65 /* DeviceInformationPackage */; };
+		B897DDC3302321D4003C9C95 /* EudiWalletKit in Frameworks */ = {isa = PBXBuildFile; productRef = B897DDC2302321D4003C9C95 /* EudiWalletKit */; };
+		B8A0C7072E1FA4BC00718DB1 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = B88EDD4D2E1514250054A824 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		B8BA8C012EB37A6900016DEA /* EudiWalletKit in Frameworks */ = {isa = PBXBuildFile; productRef = B8BA8C002EB37A6900016DEA /* EudiWalletKit */; };
+		B8E2EDCE3049928600A3B1D9 /* EudiWalletKit in Frameworks */ = {isa = PBXBuildFile; productRef = B8E2EDCD3049928600A3B1D9 /* EudiWalletKit */; };
+		B8E2EDD03049929100A3B1D9 /* EudiWalletKit in Frameworks */ = {isa = PBXBuildFile; productRef = B8E2EDCF3049929100A3B1D9 /* EudiWalletKit */; };
+		B8E690E62CFF1666003F0F07 /* KeychainWrapperPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B8E690E52CFF1666003F0F07 /* KeychainWrapperPackage */; };
+		B8EAD2363059292900F8DF61 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B8EAD2353059292900F8DF61 /* FirebaseAnalytics */; };
+		B8F55B6E2EE81517008AB59E /* KeychainWrapperPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B8F55B6D2EE81517008AB59E /* KeychainWrapperPackage */; };
+		B8FD8E922D01B7B90086A7AA /* KeychainWrapperPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B8FD8E912D01B7B90086A7AA /* KeychainWrapperPackage */; };
+		B8FD8E952D01ED4A0086A7AA /* UtilitiesPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B8FD8E942D01ED4A0086A7AA /* UtilitiesPackage */; };
+		B8FD9D772D01EEED0086A7AA /* UtilitiesPackage in Frameworks */ = {isa = PBXBuildFile; productRef = B8FD9D762D01EEED0086A7AA /* UtilitiesPackage */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B839D17B2FCEB91A00054C62 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B85B19FB2CD4E33400C57B17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B89321E02D9C36B200F9016B;
+			remoteInfo = SigningFileExtension;
+		};
+		B884679E2F3B234000DF6E8D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B85B19FB2CD4E33400C57B17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B89321E02D9C36B200F9016B;
+			remoteInfo = SigningFileExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B839D17D2FCEB91A00054C62 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B839D17A2FCEB91A00054C62 /* SigningFileExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B88A7D772F2205C400F5F219 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B884679C2F3B233D00DF6E8D /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B8F3F0812D671A4100C295DA /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B8A0C7072E1FA4BC00718DB1 /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		9F8C00F92E566405D2DC64C6 /* Shared.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
+		B85B1A032CD4E33400C57B17 /* edim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = edim.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B88A7D7E2F2205C400F5F219 /* edim-dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "edim-dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B89321E12D9C36B200F9016B /* SigningFileExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SigningFileExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B88A7D812F2205C400F5F219 /* Exceptions for "edim" folder in "edim-dev" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"/Localized: UI/LaunchScreen.storyboard",
+				Info.plist,
+			);
+			target = B88A7D4A2F2205C400F5F219 /* edim-dev */;
+		};
+		B89321EF2D9C36B200F9016B /* Exceptions for "SigningFileExtension" folder in "SigningFileExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B89321E02D9C36B200F9016B /* SigningFileExtension */;
+		};
+		B8CE47AF2F2A19F300C3B631 /* Exceptions for "edim" folder in "edim" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B85B1A022CD4E33400C57B17 /* edim */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		B830FD30301894360040D666 /* dist */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = dist;
+			sourceTree = "<group>";
+		};
+		B85B1A052CD4E33400C57B17 /* edim */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B8CE47AF2F2A19F300C3B631 /* Exceptions for "edim" folder in "edim" target */,
+				B88A7D812F2205C400F5F219 /* Exceptions for "edim" folder in "edim-dev" target */,
+			);
+			path = edim;
+			sourceTree = "<group>";
+		};
+		B89321E22D9C36B200F9016B /* SigningFileExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B89321EF2D9C36B200F9016B /* Exceptions for "SigningFileExtension" folder in "SigningFileExtension" target */,
+			);
+			path = SigningFileExtension;
+			sourceTree = "<group>";
+		};
+		B8CE388D2F2A15C300C3B631 /* dist */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = dist;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B85B1A002CD4E33400C57B17 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8FD9D772D01EEED0086A7AA /* UtilitiesPackage in Frameworks */,
+				B8E690E62CFF1666003F0F07 /* KeychainWrapperPackage in Frameworks */,
+				B8EAD2363059292900F8DF61 /* FirebaseAnalytics in Frameworks */,
+				B8E2EDCE3049928600A3B1D9 /* EudiWalletKit in Frameworks */,
+				B86016F22CF722FD008E815F /* QRCodeScannerPackage in Frameworks */,
+				B88CFD8E2F9F386E00B158BC /* FirebaseCrashlytics in Frameworks */,
+				B800CF8A2DE44B9200FE10D0 /* EudiWalletKit in Frameworks */,
+				B8FD8E922D01B7B90086A7AA /* KeychainWrapperPackage in Frameworks */,
+				B82249D92CEF301A0065C598 /* UIWrapperPackage in Frameworks */,
+				B88CD0312F9F352E00B158BC /* FirebaseCore in Frameworks */,
+				B8FD8E952D01ED4A0086A7AA /* UtilitiesPackage in Frameworks */,
+				B88EDD4E2E1514250054A824 /* RealmSwift in Frameworks */,
+				B8F55B6E2EE81517008AB59E /* KeychainWrapperPackage in Frameworks */,
+				B84979912CE7883B00ABCF00 /* SnapKit in Frameworks */,
+				B892587D2CF8A729002A0D65 /* DeviceInformationPackage in Frameworks */,
+				B8464F302DE7354D009CE76F /* EudiWalletKit in Frameworks */,
+				B8BA8C012EB37A6900016DEA /* EudiWalletKit in Frameworks */,
+				B82249DC2CEF38C80065C598 /* NetworkWrapperPackage in Frameworks */,
+				B831487F2F716C9800A2E503 /* EudiWalletKit in Frameworks */,
+				B837567C2F90B8E200462D04 /* EudiWalletKit in Frameworks */,
+				B8225FCC2CEF43000065C598 /* Moya in Frameworks */,
+				B82249D62CEF2F2C0065C598 /* AuthWrapperPackage in Frameworks */,
+				B82A69642D8AFE1400D498E9 /* ZIPFoundation in Frameworks */,
+				B897DDC3302321D4003C9C95 /* EudiWalletKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B88A7D642F2205C400F5F219 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B88467952F3B232000DF6E8D /* UtilitiesPackage in Frameworks */,
+				B88467972F3B232000DF6E8D /* KeychainWrapperPackage in Frameworks */,
+				B88467992F3B233100DF6E8D /* Moya in Frameworks */,
+				B839D1792FCEB85200054C62 /* SnapKit in Frameworks */,
+				B884679B2F3B233D00DF6E8D /* RealmSwift in Frameworks */,
+				B88467932F3B232000DF6E8D /* DeviceInformationPackage in Frameworks */,
+				B88467912F3B232000DF6E8D /* QRCodeScannerPackage in Frameworks */,
+				B884678B2F3B232000DF6E8D /* AuthWrapperPackage in Frameworks */,
+				B884678F2F3B232000DF6E8D /* NetworkWrapperPackage in Frameworks */,
+				B884678D2F3B232000DF6E8D /* UIWrapperPackage in Frameworks */,
+				B839D1772FCEB80A00054C62 /* FirebaseCrashlytics in Frameworks */,
+				B8E2EDD03049929100A3B1D9 /* EudiWalletKit in Frameworks */,
+				B88467A12F3B236400DF6E8D /* ZIPFoundation in Frameworks */,
+				B839D1752FCEB7FD00054C62 /* FirebaseCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B89321DE2D9C36B200F9016B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4EF0BE1FEACCA647AAC58B93 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				9F8C00F92E566405D2DC64C6 /* Shared.xcconfig */,
+			);
+			path = Config;
+			sourceTree = SOURCE_ROOT;
+		};
+		B85B19FA2CD4E33400C57B17 = {
+			isa = PBXGroup;
+			children = (
+				B830FD30301894360040D666 /* dist */,
+				B85B1A052CD4E33400C57B17 /* edim */,
+				B89321E22D9C36B200F9016B /* SigningFileExtension */,
+				B8A05A592CE2018100E30A7B /* Frameworks */,
+				B85B1A042CD4E33400C57B17 /* Products */,
+				B87533BE2F3619D30054CD3E /* Recovered References */,
+				4EF0BE1FEACCA647AAC58B93 /* Config */,
+			);
+			sourceTree = "<group>";
+		};
+		B85B1A042CD4E33400C57B17 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B85B1A032CD4E33400C57B17 /* edim.app */,
+				B89321E12D9C36B200F9016B /* SigningFileExtension.appex */,
+				B88A7D7E2F2205C400F5F219 /* edim-dev.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B87533BE2F3619D30054CD3E /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				B8CE388D2F2A15C300C3B631 /* dist */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		B8A05A592CE2018100E30A7B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B85B1A022CD4E33400C57B17 /* edim */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B85B1A162CD4E33500C57B17 /* Build configuration list for PBXNativeTarget "edim" */;
+			buildPhases = (
+				B85B19FF2CD4E33400C57B17 /* Sources */,
+				B85B1A002CD4E33400C57B17 /* Frameworks */,
+				B85B1A012CD4E33400C57B17 /* Resources */,
+				B8F3F0812D671A4100C295DA /* Embed Frameworks */,
+				B839D17D2FCEB91A00054C62 /* Embed Foundation Extensions */,
+				B88CFD8F2F9F392F00B158BC /* Init crashlytics */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B839D17C2FCEB91A00054C62 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B830FD30301894360040D666 /* dist */,
+				B85B1A052CD4E33400C57B17 /* edim */,
+			);
+			name = edim;
+			packageProductDependencies = (
+				B84979902CE7883B00ABCF00 /* SnapKit */,
+				B82249D52CEF2F2C0065C598 /* AuthWrapperPackage */,
+				B82249D82CEF301A0065C598 /* UIWrapperPackage */,
+				B82249DB2CEF38C80065C598 /* NetworkWrapperPackage */,
+				B8225FCB2CEF43000065C598 /* Moya */,
+				B86016F12CF722FD008E815F /* QRCodeScannerPackage */,
+				B892587C2CF8A729002A0D65 /* DeviceInformationPackage */,
+				B8E690E52CFF1666003F0F07 /* KeychainWrapperPackage */,
+				B8FD8E912D01B7B90086A7AA /* KeychainWrapperPackage */,
+				B8FD8E942D01ED4A0086A7AA /* UtilitiesPackage */,
+				B8FD9D762D01EEED0086A7AA /* UtilitiesPackage */,
+				B82A69632D8AFE1400D498E9 /* ZIPFoundation */,
+				B800CF892DE44B9200FE10D0 /* EudiWalletKit */,
+				B8464F2F2DE7354D009CE76F /* EudiWalletKit */,
+				B88EDD4D2E1514250054A824 /* RealmSwift */,
+				B8BA8C002EB37A6900016DEA /* EudiWalletKit */,
+				B8F55B6D2EE81517008AB59E /* KeychainWrapperPackage */,
+				B831487E2F716C9800A2E503 /* EudiWalletKit */,
+				B837567B2F90B8E200462D04 /* EudiWalletKit */,
+				B88CD0302F9F352E00B158BC /* FirebaseCore */,
+				B88CFD8D2F9F386E00B158BC /* FirebaseCrashlytics */,
+				B897DDC2302321D4003C9C95 /* EudiWalletKit */,
+				B8E2EDCD3049928600A3B1D9 /* EudiWalletKit */,
+				B8EAD2353059292900F8DF61 /* FirebaseAnalytics */,
+			);
+			productName = edim;
+			productReference = B85B1A032CD4E33400C57B17 /* edim.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B88A7D4A2F2205C400F5F219 /* edim-dev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B88A7D7B2F2205C400F5F219 /* Build configuration list for PBXNativeTarget "edim-dev" */;
+			buildPhases = (
+				B88A7D632F2205C400F5F219 /* Sources */,
+				B88A7D642F2205C400F5F219 /* Frameworks */,
+				B88A7D762F2205C400F5F219 /* Resources */,
+				B88A7D772F2205C400F5F219 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B884679F2F3B234000DF6E8D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B830FD30301894360040D666 /* dist */,
+				B85B1A052CD4E33400C57B17 /* edim */,
+				B8CE388D2F2A15C300C3B631 /* dist */,
+			);
+			name = "edim-dev";
+			packageProductDependencies = (
+				B884678A2F3B232000DF6E8D /* AuthWrapperPackage */,
+				B884678C2F3B232000DF6E8D /* UIWrapperPackage */,
+				B884678E2F3B232000DF6E8D /* NetworkWrapperPackage */,
+				B88467902F3B232000DF6E8D /* QRCodeScannerPackage */,
+				B88467922F3B232000DF6E8D /* DeviceInformationPackage */,
+				B88467942F3B232000DF6E8D /* UtilitiesPackage */,
+				B88467962F3B232000DF6E8D /* KeychainWrapperPackage */,
+				B88467982F3B233100DF6E8D /* Moya */,
+				B884679A2F3B233D00DF6E8D /* RealmSwift */,
+				B88467A02F3B236400DF6E8D /* ZIPFoundation */,
+				B839D1742FCEB7FD00054C62 /* FirebaseCore */,
+				B839D1762FCEB80A00054C62 /* FirebaseCrashlytics */,
+				B839D1782FCEB85200054C62 /* SnapKit */,
+				B8E2EDCF3049929100A3B1D9 /* EudiWalletKit */,
+			);
+			productName = edim;
+			productReference = B88A7D7E2F2205C400F5F219 /* edim-dev.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B89321E02D9C36B200F9016B /* SigningFileExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B89321EC2D9C36B200F9016B /* Build configuration list for PBXNativeTarget "SigningFileExtension" */;
+			buildPhases = (
+				B89321DD2D9C36B200F9016B /* Sources */,
+				B89321DE2D9C36B200F9016B /* Frameworks */,
+				B89321DF2D9C36B200F9016B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B89321E22D9C36B200F9016B /* SigningFileExtension */,
+			);
+			name = SigningFileExtension;
+			productName = SigningFileExtension;
+			productReference = B89321E12D9C36B200F9016B /* SigningFileExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B85B19FB2CD4E33400C57B17 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					B85B1A022CD4E33400C57B17 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					B88A7D4A2F2205C400F5F219 = {
+						LastSwiftMigration = 2600;
+					};
+					B89321E02D9C36B200F9016B = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = B85B19FE2CD4E33400C57B17 /* Build configuration list for PBXProject "edim" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B85B19FA2CD4E33400C57B17;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B849798F2CE7883B00ABCF00 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				B82249D42CEF2F2C0065C598 /* XCLocalSwiftPackageReference "../../AuthWrapperPackage" */,
+				B82249D72CEF301A0065C598 /* XCLocalSwiftPackageReference "../../UIWrapperPackage" */,
+				B82249DA2CEF38C80065C598 /* XCLocalSwiftPackageReference "../../NetworkWrapperPackage" */,
+				B8225FCA2CEF42E20065C598 /* XCRemoteSwiftPackageReference "Moya" */,
+				B86016F02CF722FD008E815F /* XCLocalSwiftPackageReference "../../QRCodeScannerPackage/QRCodeScannerPackage" */,
+				B892587B2CF8A729002A0D65 /* XCLocalSwiftPackageReference "../../DeviceInformationPackage/DeviceInformationPackage" */,
+				B8FD8E932D01ED4A0086A7AA /* XCLocalSwiftPackageReference "../../UtilitiesPackage/UtilitiesPackage" */,
+				B82A69622D8AFDEB00D498E9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				B88EDCD52E141EDB0054A824 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				B88EDD4C2E1514250054A824 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				B8F55B6C2EE81517008AB59E /* XCLocalSwiftPackageReference "../../KeychainWrapperPackage/KeychainWrapperPackage" */,
+				B88CD02F2F9F349100B158BC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				B8E2EDCC3049928600A3B1D9 /* XCLocalSwiftPackageReference "../eudi-lib-ios-wallet-kit-0.50.0" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = B85B1A042CD4E33400C57B17 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B85B1A022CD4E33400C57B17 /* edim */,
+				B88A7D4A2F2205C400F5F219 /* edim-dev */,
+				B89321E02D9C36B200F9016B /* SigningFileExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B85B1A012CD4E33400C57B17 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B88A7D762F2205C400F5F219 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B89321DF2D9C36B200F9016B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B88CFD8F2F9F392F00B158BC /* Init crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Init crashlytics";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B85B19FF2CD4E33400C57B17 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B88A7D632F2205C400F5F219 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B89321DD2D9C36B200F9016B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B839D17C2FCEB91A00054C62 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B89321E02D9C36B200F9016B /* SigningFileExtension */;
+			targetProxy = B839D17B2FCEB91A00054C62 /* PBXContainerItemProxy */;
+		};
+		B884679F2F3B234000DF6E8D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B89321E02D9C36B200F9016B /* SigningFileExtension */;
+			targetProxy = B884679E2F3B234000DF6E8D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		B85B1A172CD4E33500C57B17 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = edim/edim.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "$(EDIM_DEVELOPMENT_TEAM)";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = edim/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Digimaks;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NFCReaderUsageDescription = "For scanning NFC tags";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "For transfering data";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to scan QR codes";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "For biometrical authentication";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/mobile-ui/node_modules/.pnpm/node_modules/@rollup/rollup-darwin-arm64",
+					"$(PROJECT_DIR)/mobile-ui/node_modules/.pnpm/@rollup+rollup-darwin-arm64@4.18.0/node_modules/@rollup/rollup-darwin-arm64",
+					"$(PROJECT_DIR)/mobile-ui/node_modules/.pnpm/rollup@4.18.0/node_modules/@rollup/rollup-darwin-arm64",
+				);
+				MARKETING_VERSION = 1.4;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = lv.zzdats.edim;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B85B1A182CD4E33500C57B17 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "edim/edim-Release.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "$(EDIM_DEVELOPMENT_TEAM)";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = edim/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Digimaks;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NFCReaderUsageDescription = "For scanning NFC tags";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "For transfering data";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to scan QR codes";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "For biometrical authentication";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/mobile-ui/node_modules/.pnpm/node_modules/@rollup/rollup-darwin-arm64",
+					"$(PROJECT_DIR)/mobile-ui/node_modules/.pnpm/@rollup+rollup-darwin-arm64@4.18.0/node_modules/@rollup/rollup-darwin-arm64",
+					"$(PROJECT_DIR)/mobile-ui/node_modules/.pnpm/rollup@4.18.0/node_modules/@rollup/rollup-darwin-arm64",
+				);
+				MARKETING_VERSION = 1.4;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = lv.zzdats.edim;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		B85B1A192CD4E33500C57B17 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F8C00F92E566405D2DC64C6 /* Shared.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B85B1A1A2CD4E33500C57B17 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F8C00F92E566405D2DC64C6 /* Shared.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B88A7D7C2F2205C400F5F219 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = edim/edim.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 15;
+				DEVELOPMENT_TEAM = "$(EDIM_DEVELOPMENT_TEAM)";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = edim/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Digimaks-DEV";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "For transfering data";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to scan QR codes";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "For biometrical authentication";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/mobile-ui/node_modules/.pnpm/node_modules/@rollup/rollup-darwin-arm64",
+					"$(PROJECT_DIR)/mobile-ui/node_modules/.pnpm/@rollup+rollup-darwin-arm64@4.18.0/node_modules/@rollup/rollup-darwin-arm64",
+					"$(PROJECT_DIR)/mobile-ui/node_modules/.pnpm/rollup@4.18.0/node_modules/@rollup/rollup-darwin-arm64",
+				);
+				MARKETING_VERSION = 1.2.2;
+				PRODUCT_BUNDLE_IDENTIFIER = lv.zzdats.edim.dev1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B88A7D7D2F2205C400F5F219 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = edim/edim.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 15;
+				DEVELOPMENT_TEAM = "$(EDIM_DEVELOPMENT_TEAM)";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = edim/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Digimaks-DEV";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "For transfering data";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to scan QR codes";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "For biometrical authentication";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/mobile-ui/node_modules/.pnpm/node_modules/@rollup/rollup-darwin-arm64",
+					"$(PROJECT_DIR)/mobile-ui/node_modules/.pnpm/@rollup+rollup-darwin-arm64@4.18.0/node_modules/@rollup/rollup-darwin-arm64",
+					"$(PROJECT_DIR)/mobile-ui/node_modules/.pnpm/rollup@4.18.0/node_modules/@rollup/rollup-darwin-arm64",
+				);
+				MARKETING_VERSION = 1.2.2;
+				PRODUCT_BUNDLE_IDENTIFIER = lv.zzdats.edim.dev1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		B89321ED2D9C36B200F9016B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SigningFileExtension/SigningFileExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "$(EDIM_DEVELOPMENT_TEAM)";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SigningFileExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SigningFileExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = lv.zzdats.edim.SigningFileExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B89321EE2D9C36B200F9016B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SigningFileExtension/SigningFileExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "$(EDIM_DEVELOPMENT_TEAM)";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SigningFileExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SigningFileExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = lv.zzdats.edim.SigningFileExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B85B19FE2CD4E33400C57B17 /* Build configuration list for PBXProject "edim" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B85B1A192CD4E33500C57B17 /* Debug */,
+				B85B1A1A2CD4E33500C57B17 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B85B1A162CD4E33500C57B17 /* Build configuration list for PBXNativeTarget "edim" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B85B1A172CD4E33500C57B17 /* Debug */,
+				B85B1A182CD4E33500C57B17 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B88A7D7B2F2205C400F5F219 /* Build configuration list for PBXNativeTarget "edim-dev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B88A7D7C2F2205C400F5F219 /* Debug */,
+				B88A7D7D2F2205C400F5F219 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B89321EC2D9C36B200F9016B /* Build configuration list for PBXNativeTarget "SigningFileExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B89321ED2D9C36B200F9016B /* Debug */,
+				B89321EE2D9C36B200F9016B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		B82249D42CEF2F2C0065C598 /* XCLocalSwiftPackageReference "../../AuthWrapperPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../AuthWrapperPackage;
+		};
+		B82249D72CEF301A0065C598 /* XCLocalSwiftPackageReference "../../UIWrapperPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../UIWrapperPackage;
+		};
+		B82249DA2CEF38C80065C598 /* XCLocalSwiftPackageReference "../../NetworkWrapperPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../NetworkWrapperPackage;
+		};
+		B86016F02CF722FD008E815F /* XCLocalSwiftPackageReference "../../QRCodeScannerPackage/QRCodeScannerPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../QRCodeScannerPackage/QRCodeScannerPackage;
+		};
+		B892587B2CF8A729002A0D65 /* XCLocalSwiftPackageReference "../../DeviceInformationPackage/DeviceInformationPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../DeviceInformationPackage/DeviceInformationPackage;
+		};
+		B8E2EDCC3049928600A3B1D9 /* XCLocalSwiftPackageReference "../eudi-lib-ios-wallet-kit-0.50.0" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../eudi-lib-ios-wallet-kit-0.50.0";
+		};
+		B8F55B6C2EE81517008AB59E /* XCLocalSwiftPackageReference "../../KeychainWrapperPackage/KeychainWrapperPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../KeychainWrapperPackage/KeychainWrapperPackage;
+		};
+		B8FD8E932D01ED4A0086A7AA /* XCLocalSwiftPackageReference "../../UtilitiesPackage/UtilitiesPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../UtilitiesPackage/UtilitiesPackage;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B8225FCA2CEF42E20065C598 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
+		B82A69622D8AFDEB00D498E9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.19;
+			};
+		};
+		B849798F2CE7883B00ABCF00 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		B88CD02F2F9F349100B158BC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.12.1;
+			};
+		};
+		B88EDCD52E141EDB0054A824 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
+		B88EDD4C2E1514250054A824 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B800CF892DE44B9200FE10D0 /* EudiWalletKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EudiWalletKit;
+		};
+		B82249D52CEF2F2C0065C598 /* AuthWrapperPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AuthWrapperPackage;
+		};
+		B82249D82CEF301A0065C598 /* UIWrapperPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UIWrapperPackage;
+		};
+		B82249DB2CEF38C80065C598 /* NetworkWrapperPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NetworkWrapperPackage;
+		};
+		B8225FCB2CEF43000065C598 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B8225FCA2CEF42E20065C598 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		B82A69632D8AFE1400D498E9 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B82A69622D8AFDEB00D498E9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+		B831487E2F716C9800A2E503 /* EudiWalletKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EudiWalletKit;
+		};
+		B837567B2F90B8E200462D04 /* EudiWalletKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EudiWalletKit;
+		};
+		B839D1742FCEB7FD00054C62 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B88CD02F2F9F349100B158BC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		B839D1762FCEB80A00054C62 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B88CD02F2F9F349100B158BC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		B839D1782FCEB85200054C62 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B849798F2CE7883B00ABCF00 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		B8464F2F2DE7354D009CE76F /* EudiWalletKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EudiWalletKit;
+		};
+		B84979902CE7883B00ABCF00 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B849798F2CE7883B00ABCF00 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		B86016F12CF722FD008E815F /* QRCodeScannerPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QRCodeScannerPackage;
+		};
+		B884678A2F3B232000DF6E8D /* AuthWrapperPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B82249D42CEF2F2C0065C598 /* XCLocalSwiftPackageReference "../../AuthWrapperPackage" */;
+			productName = AuthWrapperPackage;
+		};
+		B884678C2F3B232000DF6E8D /* UIWrapperPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B82249D72CEF301A0065C598 /* XCLocalSwiftPackageReference "../../UIWrapperPackage" */;
+			productName = UIWrapperPackage;
+		};
+		B884678E2F3B232000DF6E8D /* NetworkWrapperPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B82249DA2CEF38C80065C598 /* XCLocalSwiftPackageReference "../../NetworkWrapperPackage" */;
+			productName = NetworkWrapperPackage;
+		};
+		B88467902F3B232000DF6E8D /* QRCodeScannerPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B86016F02CF722FD008E815F /* XCLocalSwiftPackageReference "../../QRCodeScannerPackage/QRCodeScannerPackage" */;
+			productName = QRCodeScannerPackage;
+		};
+		B88467922F3B232000DF6E8D /* DeviceInformationPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B892587B2CF8A729002A0D65 /* XCLocalSwiftPackageReference "../../DeviceInformationPackage/DeviceInformationPackage" */;
+			productName = DeviceInformationPackage;
+		};
+		B88467942F3B232000DF6E8D /* UtilitiesPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B8FD8E932D01ED4A0086A7AA /* XCLocalSwiftPackageReference "../../UtilitiesPackage/UtilitiesPackage" */;
+			productName = UtilitiesPackage;
+		};
+		B88467962F3B232000DF6E8D /* KeychainWrapperPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B8F55B6C2EE81517008AB59E /* XCLocalSwiftPackageReference "../../KeychainWrapperPackage/KeychainWrapperPackage" */;
+			productName = KeychainWrapperPackage;
+		};
+		B88467982F3B233100DF6E8D /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B8225FCA2CEF42E20065C598 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		B884679A2F3B233D00DF6E8D /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B88EDD4C2E1514250054A824 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+		B88467A02F3B236400DF6E8D /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B82A69622D8AFDEB00D498E9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+		B88CD0302F9F352E00B158BC /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B88CD02F2F9F349100B158BC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		B88CFD8D2F9F386E00B158BC /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B88CD02F2F9F349100B158BC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		B88EDD4D2E1514250054A824 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B88EDD4C2E1514250054A824 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+		B892587C2CF8A729002A0D65 /* DeviceInformationPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DeviceInformationPackage;
+		};
+		B897DDC2302321D4003C9C95 /* EudiWalletKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EudiWalletKit;
+		};
+		B8BA8C002EB37A6900016DEA /* EudiWalletKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EudiWalletKit;
+		};
+		B8E2EDCD3049928600A3B1D9 /* EudiWalletKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EudiWalletKit;
+		};
+		B8E2EDCF3049929100A3B1D9 /* EudiWalletKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B8E2EDCC3049928600A3B1D9 /* XCLocalSwiftPackageReference "../eudi-lib-ios-wallet-kit-0.50.0" */;
+			productName = EudiWalletKit;
+		};
+		B8E690E52CFF1666003F0F07 /* KeychainWrapperPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KeychainWrapperPackage;
+		};
+		B8EAD2353059292900F8DF61 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B88CD02F2F9F349100B158BC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		B8F55B6D2EE81517008AB59E /* KeychainWrapperPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KeychainWrapperPackage;
+		};
+		B8FD8E912D01B7B90086A7AA /* KeychainWrapperPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KeychainWrapperPackage;
+		};
+		B8FD8E942D01ED4A0086A7AA /* UtilitiesPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UtilitiesPackage;
+		};
+		B8FD9D762D01EEED0086A7AA /* UtilitiesPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UtilitiesPackage;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = B85B19FB2CD4E33400C57B17 /* Project object */;
+}
