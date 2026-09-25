@@ -1,9 +1,7 @@
-# Digimaks — EU Digital Identity Wallet (iOS)
+# Digimaks
 
-**Digimaks** is an **[EU Digital Identity Wallet (EUDIW)](https://ec.europa.eu/digital-building-blocks/sites/display/EUDIGITALIDENTITYWALLET/EU+Digital+Identity+Wallet+Home)**
-application for iOS, continuing the work of the
-**[NOBID Consortium](https://www.nobidconsortium.com/)**.
-
+**Digimaks** is a mobile digital wallet built on open EUDI Wallet reference components and technically aligned with the formats and protocols of the EUDI Wallet Architecture and Reference Framework (SD-JWT VC, mdoc, OpenID4VCI, OpenID4VP).
+Digimaks is not a certified European Digital Identity Wallet within the meaning of Regulation (EU) 2024/1183 and is not the national wallet of any EU Member State. 
 It lets a person hold issued digital credentials on their device and present them —
 selectively, under their own control — to public and private relying parties, in line
 with the [eIDAS 2.0 Regulation (EU) 2024/1183](https://eur-lex.europa.eu/eli/reg/2024/1183/oj).

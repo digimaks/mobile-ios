@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: EUPL-1.2
+
 import { mobileApp } from '@edim/mobile-ui';
 import '@edim/mobile-ui/dist/style.css';
 

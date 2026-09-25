@@ -14,8 +14,6 @@ import EudiWalletKit
 import FirebaseCore
 import FirebaseCrashlytics
 #if canImport(FirebaseAnalytics)
-// Only the production `edim` target links FirebaseAnalytics; `edim-dev` does not,
-// so this import is conditional to keep both flavours compiling from one source.
 import FirebaseAnalytics
 #endif
 

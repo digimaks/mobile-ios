@@ -30,6 +30,7 @@ public struct EudiWalletConfiguration: Sendable {
 	/// Method to perform mdoc authentication (MAC or signature). Defaults to device signature
 	public let deviceAuthMethod: DeviceAuthMethod
 	/// preferred UI culture for localization of display names. It must be a 2-letter language code. If not set, the system locale is used
+	// Modified by Matīss Mamedovs in 2026
 	public var uiCulture: String?
 	/// If not-nil, logging to the specified log file name will be configured
 	public let logFileName: String?
